@@ -6,7 +6,7 @@ import {
   MOCK_CONNECTION_REQUESTS,
   type ConnectionRequest,
 } from '@/app/data/messaging';
-import logo from "figma:asset/2fd24bdfa9a1550b5d535dd08073fdb193dd71ec.png";
+import logo from "@/assets/2fd24bdfa9a1550b5d535dd08073fdb193dd71ec.png";
 import type { UserGroup } from '@/app/data/profile';
 
 // Improved NavItem with a "Pill" design for the selected state
