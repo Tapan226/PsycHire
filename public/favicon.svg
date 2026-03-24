@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- Teal arrow (left, lower) — right then up -->
-  <path d="M1 28 L15 28 L15 13" stroke="#14b8a6" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Blue arrow (right, upper) — right then up -->
-  <path d="M11 19 L27 19 L27 3" stroke="#1e40af" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
