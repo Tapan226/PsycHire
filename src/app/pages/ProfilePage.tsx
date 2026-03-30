@@ -716,40 +716,18 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
 
                 {/* Meta line */}
                 <div className="flex items-center gap-2 flex-wrap mt-1.5">
-                  <span className="inline-flex items-center gap-1 text-[13px] text-gray-500">
+                  <span className="inline-flex items-center gap-1 text-sm text-gray-500">
                     <MapPin size={13} className="text-gray-400" />{profile.location}
                   </span>
                   <span className="text-gray-200">·</span>
-                  <span className="text-[13px] text-gray-500">{profile.careerStage}</span>
+                  <span className="text-sm text-gray-500">{profile.careerStage}</span>
                   {isProfessional && profile.yearsOfExperience && (
                     <>
                       <span className="text-gray-200">·</span>
-                      <span className="text-[13px] text-gray-500">{profile.yearsOfExperience} yrs experience</span>
+                      <span className="text-sm text-gray-500">{profile.yearsOfExperience} yrs experience</span>
                     </>
                   )}
                 </div>
-
-                {/* Specialization tags in header */}
-                {profile.specializations.length > 0 && (
-                  <div className="flex items-center gap-1.5 flex-wrap mt-3">
-                    {profile.specializations.map(s => (
-                      <span key={s} className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">{s}</span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Open To chips */}
-                {profile.openTo.length > 0 && (
-                  <div className="flex items-center gap-1.5 flex-wrap mt-2">
-                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">Open to:</span>
-                    {profile.openTo.slice(0, 4).map(o => (
-                      <span key={o} className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-100">{o}</span>
-                    ))}
-                    {profile.openTo.length > 4 && (
-                      <span className="text-[10px] font-semibold text-gray-400">+{profile.openTo.length - 4} more</span>
-                    )}
-                  </div>
-                )}
               </div>
 
               {/* Actions */}
@@ -845,23 +823,17 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
           <aside className="lg:border-l lg:border-gray-100 lg:pl-8">
             <div className="lg:sticky lg:top-6 flex flex-col gap-6">
 
-              {/* Basic Info */}
+              {/* Quick Info */}
               <div className="flex flex-col gap-3.5">
                 {[
-                  { l: 'Career Stage', v: profile.careerStage },
-                  { l: 'Location', v: profile.location },
                   { l: 'Work Mode', v: profile.preferredWorkMode },
                   ...(profile.availabilityHours > 0 ? [{ l: 'Availability', v: `${profile.availabilityHours} hrs/week` }] : []),
-                  ...(isProfessional && profile.yearsOfExperience ? [{ l: 'Experience', v: `${profile.yearsOfExperience} years` }] : []),
                   ...(profile.email ? [{ l: 'Email', v: profile.email }] : []),
                   ...(profile.phone ? [{ l: 'Phone', v: profile.phone }] : []),
-                  ...(profile.dateOfBirth ? [{ l: 'Date of Birth', v: profile.dateOfBirth }] : []),
-                  ...(profile.contactPreference ? [{ l: 'Preferred Contact', v: profile.contactPreference }] : []),
-                  ...(profile.profileVisibility ? [{ l: 'Visibility', v: profile.profileVisibility }] : []),
                 ].map(s => (
                   <div key={s.l}>
                     <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-0.5">{s.l}</span>
-                    <span className="text-[13px] font-semibold text-gray-800">{s.v}</span>
+                    <span className="text-sm font-semibold text-gray-800">{s.v}</span>
                   </div>
                 ))}
               </div>
@@ -871,7 +843,7 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                 <>
                   <div className="h-px bg-gray-100" />
                   <div>
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-2.5">Social Links</span>
+                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-2.5">Links</span>
                     <div className="flex items-center gap-2">
                       {profile.socialLinks.linkedin && (
                         <a href={profile.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-100 transition-colors" title="LinkedIn">
@@ -893,34 +865,6 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                           <Globe size={15} />
                         </a>
                       )}
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {profile.specializations.length > 0 && (
-                <>
-                  <div className="h-px bg-gray-100" />
-                  <div>
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-2.5">Specializations</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {profile.specializations.map((s) => (
-                        <span key={s} className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-100">{s}</span>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {profile.openTo.length > 0 && (
-                <>
-                  <div className="h-px bg-gray-100" />
-                  <div>
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-2.5">Open To</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {profile.openTo.map((item) => (
-                        <span key={item} className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-teal-50 text-teal-700 border border-teal-100">{item}</span>
-                      ))}
                     </div>
                   </div>
                 </>
