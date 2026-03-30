@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Portal } from "@/app/components/shared/Portal";
-import { X, User, FileText, ChevronRight, Zap } from "lucide-react";
+import { X, User, FileText, ChevronRight, Zap, ExternalLink } from "lucide-react";
 
 interface ApplyMethodModalProps {
   isOpen: boolean;
@@ -9,6 +9,7 @@ interface ApplyMethodModalProps {
   onSelectCustom: () => void;
   jobTitle: string;
   companyName: string;
+  externalUrl?: string;
 }
 
 export function ApplyMethodModal({
@@ -18,9 +19,10 @@ export function ApplyMethodModal({
   onSelectCustom,
   jobTitle,
   companyName,
+  externalUrl,
 }: ApplyMethodModalProps) {
   const [mounted, setMounted] = useState(false);
-  const [selected, setSelected] = useState<"profile" | "custom">("profile");
+  const [selected, setSelected] = useState<"profile" | "custom" | "external">("profile");
 
   useEffect(() => {
     setMounted(true);
@@ -41,6 +43,9 @@ export function ApplyMethodModal({
   const handleContinue = () => {
     if (selected === "profile") {
       onSelectProfile();
+    } else if (selected === "external" && externalUrl) {
+      window.open(externalUrl, '_blank', 'noopener,noreferrer');
+      onClose();
     } else {
       onSelectCustom();
     }
@@ -160,6 +165,49 @@ export function ApplyMethodModal({
               )}
             </div>
           </button>
+
+          {/* Option 3: Apply on External Site */}
+          {externalUrl && (
+            <button
+              onClick={() => setSelected("external")}
+              className={`relative w-full text-left p-5 rounded-xl border-2 transition-all duration-200 ${
+                selected === "external"
+                  ? "border-brand-primary bg-brand-primary/[0.03] shadow-sm"
+                  : "border-gray-200 hover:border-gray-300 bg-white"
+              }`}
+            >
+              <div className="flex items-start gap-4">
+                <div
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                    selected === "external"
+                      ? "bg-brand-primary text-white"
+                      : "bg-gray-100 text-gray-500"
+                  }`}
+                >
+                  <ExternalLink size={18} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-sm font-bold text-gray-900">
+                    Apply on External Site
+                  </span>
+                  <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                    You'll be redirected to the company's application portal.
+                  </p>
+                </div>
+              </div>
+              <div
+                className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                  selected === "external"
+                    ? "border-brand-primary bg-brand-primary"
+                    : "border-gray-300"
+                }`}
+              >
+                {selected === "external" && (
+                  <div className="w-2 h-2 rounded-full bg-white" />
+                )}
+              </div>
+            </button>
+          )}
         </div>
 
         {/* Footer */}

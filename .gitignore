@@ -7,3 +7,11 @@ dist/
 .DS_Store
 Thumbs.db
 *.log
+
+# Test artifacts
+test-results/
+playwright-report/
+blob-report/
+
+# Claude Code
+.claude/

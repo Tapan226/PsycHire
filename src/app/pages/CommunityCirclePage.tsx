@@ -37,6 +37,7 @@ import {
   Info,
   Trash2,
   AlertTriangle,
+  Heart,
 } from 'lucide-react';
 import { Portal } from '@/app/components/shared/Portal';
 import { ConfirmDialog } from '@/app/components/shared/ConfirmDialog';
@@ -452,6 +453,8 @@ function DiscussionCard({ thread }: { thread: DiscussionThread }) {
   const [showComments, setShowComments] = useState(false);
   const [isSaved, setIsSaved] = useState(thread.isSaved || false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 20) + 1);
 
   const TAG_VARIANT: Record<DiscussionTag, 'mint' | 'blue' | 'amber' | 'purple' | 'rose'> = {
     'Case Discussion': 'mint',
@@ -518,6 +521,15 @@ function DiscussionCard({ thread }: { thread: DiscussionThread }) {
       {/* Actions */}
       <div className="px-5 pb-4">
         <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
+          <button
+            onClick={() => { setIsLiked(!isLiked); setLikeCount(prev => isLiked ? prev - 1 : prev + 1); }}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              isLiked ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:text-red-500 hover:bg-gray-50'
+            }`}
+          >
+            <Heart size={14} className={isLiked ? 'fill-current' : ''} />
+            {likeCount > 0 ? likeCount : 'Like'}
+          </button>
           <button
             onClick={() => setShowComments(!showComments)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${

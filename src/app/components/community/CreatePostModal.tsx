@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Portal } from '@/app/components/shared/Portal';
-import { X, ChevronDown, Check } from 'lucide-react';
+import { X, ChevronDown, Check, ImagePlus } from 'lucide-react';
 import { CommunityCircle, PostType, UserProfile } from '@/app/data/community';
 
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: { type: PostType; title: string; content: string; circleId: string }) => void;
+  onSubmit: (data: { type: PostType; title: string; content: string; circleId: string; imageUrl?: string }) => void;
   joinedCircles?: CommunityCircle[];
   currentUser?: UserProfile;
   circleName?: string;
@@ -24,6 +24,7 @@ export function CreatePostModal({
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -39,16 +40,26 @@ export function CreatePostModal({
 
   if (!isOpen || !mounted) return null;
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setImagePreview(url);
+    }
+  };
+
   const handleSubmit = () => {
     if (!content.trim() || !selectedCircleId) return;
     onSubmit({
         type: 'Text',
         title: title,
         content: content,
-        circleId: selectedCircleId
+        circleId: selectedCircleId,
+        imageUrl: imagePreview || undefined,
     });
     setTitle('');
     setContent('');
+    setImagePreview(null);
     onClose();
   };
 
@@ -113,6 +124,38 @@ export function CreatePostModal({
                         placeholder="What's on your mind?"
                         className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-[color:var(--color-brand-primary)] transition-colors min-h-[150px] resize-none"
                     />
+                </div>
+
+                {/* Image Upload */}
+                <div>
+                    <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5 block">Image <span className="font-normal normal-case tracking-normal text-gray-400">(Optional)</span></label>
+                    {imagePreview ? (
+                      <div className="relative rounded-xl overflow-hidden border border-gray-200">
+                        <img src={imagePreview} alt="Preview" className="w-full max-h-[200px] object-cover" />
+                        <button
+                          onClick={() => setImagePreview(null)}
+                          className="absolute top-2 right-2 w-7 h-7 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : (
+                      <label className="flex items-center gap-3 p-4 bg-gray-50 border border-dashed border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 hover:border-gray-400 transition-all">
+                        <div className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-400">
+                          <ImagePlus size={20} />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-700">Add an image</p>
+                          <p className="text-xs text-gray-400">PNG, JPG up to 5MB</p>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageSelect}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
                 </div>
             </div>
         </div>

@@ -418,7 +418,7 @@ export function CreateJobPage({ onBack, onNavigate, editMode = false, editJobId 
                   <TextField label="Application Deadline" value={form.deadline} onChange={v => updateField('deadline', v)} placeholder="YYYY-MM-DD" required />
                   <TextField label="Open Positions" value={form.openPositions} onChange={v => updateField('openPositions', v)} placeholder="e.g., 2" />
                 </div>
-                <TextField label="Reporting To" value={form.reportingTo} onChange={v => updateField('reportingTo', v)} placeholder="e.g., Dr. Meera Sharma, Senior Clinical Psychologist" />
+                <TextField label="Contact Person" value={form.reportingTo} onChange={v => updateField('reportingTo', v)} placeholder="e.g., Dr. Meera Sharma, Senior Clinical Psychologist" />
                 <TagField label="Population Served" items={form.populationServed} onChange={v => updateField('populationServed', v)} placeholder="e.g., Children (3-12)" />
                 <TagField label="Languages Required" items={form.languages} onChange={v => updateField('languages', v)} placeholder="e.g., English, Hindi" />
                 <TagField label="Tags" items={form.tags} onChange={v => updateField('tags', v)} placeholder="e.g., Clinical, Pediatric" />

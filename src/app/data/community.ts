@@ -122,6 +122,7 @@ export interface Post {
   comments: DiscussionComment[];
   isFlagged?: boolean;
   likes?: number;
+  imageUrl?: string;
   circle?: { id: string; name: string };
 }
 
@@ -474,7 +475,9 @@ export const mockCircleEvents: CircleEvent[] = [
 
 /* ─── Legacy compat: mockPosts ─── */
 
-export const mockPosts: Post[] = mockDiscussions.map(d => ({
+const MOCK_LIKES = [14, 8, 23, 5, 31, 2, 17, 9, 12, 6];
+
+export const mockPosts: Post[] = mockDiscussions.map((d, i) => ({
   id: d.id,
   circleId: d.circleId,
   author: d.author,
@@ -483,4 +486,5 @@ export const mockPosts: Post[] = mockDiscussions.map(d => ({
   content: d.content,
   timestamp: d.timestamp,
   comments: d.comments,
+  likes: MOCK_LIKES[i % MOCK_LIKES.length],
 }));

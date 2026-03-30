@@ -55,6 +55,7 @@ export function ReferralsPage({
   // ── Search state ──
   const [internalSearchQuery, setInternalSearchQuery] = useState('');
   const searchQuery = embedded && externalSearchQuery !== undefined ? externalSearchQuery : internalSearchQuery;
+  const setSearchQuery = embedded && onExternalSearchChange ? onExternalSearchChange : setInternalSearchQuery;
 
   // ── Sub-tab state (professional only) ──
   const [internalTab, setInternalTab] = useState<ReferralSubTab>('all');
@@ -217,6 +218,24 @@ export function ReferralsPage({
           )}
         </div>
       </div>
+
+      {/* Browse by Specialization */}
+      {activeTab === 'all' && !searchQuery && (
+        <div className="mb-6">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider shrink-0">Browse:</span>
+            {['Clinical', 'Counselling', 'Child Psychology', 'Neuropsychology', 'I/O Psychology', 'Community', 'Rehabilitation'].map(cat => (
+              <button
+                key={cat}
+                onClick={() => setSearchQuery(cat)}
+                className="px-3 py-1.5 rounded-full text-[12px] font-medium bg-white border border-gray-200 text-gray-600 hover:bg-brand-primary/5 hover:text-brand-primary hover:border-brand-primary/20 transition-all"
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Results grid */}
       {isTabLoading ? (

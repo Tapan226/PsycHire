@@ -511,7 +511,7 @@ export function OnboardingPage({ onComplete }: OnboardingPageProps) {
 
         </div>
 
-        {step === 6 && (
+        {step >= 2 && step <= 6 && (
            <div className="mt-4 text-center animate-fade-in">
              <button onClick={handleNext} className="text-[13px] font-semibold text-gray-500 hover:text-gray-700 transition-colors">Skip for now</button>
            </div>

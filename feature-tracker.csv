@@ -1,0 +1,210 @@
+PsycHIRE — Feature Tracker,,,,,,,
+For client & team review · Priority: Core = launch-critical · Standard = full release · Enhanced = power features · Phase II = future,,,,,,,
+#,Module,Area,Feature,Description,Priority,Status,QA
+AUTHENTICATION,,,,,,,
+1,Authentication,Sign In & Sign Up,Login,Users sign in with email and password to access the platform.,Core,Done,Done
+2,Authentication,Sign In & Sign Up,Sign Up,"New users register with name, email, and password.",Core,Done,Done
+3,Authentication,Sign In & Sign Up,Onboarding,"New users complete a guided 3-step setup: select role, choose interests, fill profile details.",Core,Done,Done
+4,Authentication,Sign In & Sign Up,Logout,Users log out from the profile menu and are returned to the login screen.,Core,Done,Done
+5,Authentication,Roles,Role switcher,"Users can switch between roles (Student, Professional, Company, Admin) from the profile menu. The platform adapts its content and navigation accordingly.",Core,Done,Done
+NAVIGATION,,,,,,,
+6,Navigation,Global Navigation,Desktop navigation bar,Top navigation with clearly labelled sections. Active section is visually highlighted.,Core,Done,Done
+7,Navigation,Global Navigation,Mobile navigation,"On mobile, a hamburger menu opens a full navigation drawer. A fixed bottom bar provides one-tap access to key sections.",Core,Done,Done
+8,Navigation,Global Navigation,Role-based navigation,Nav items adapt per role — Company users see 'My Listings'; Admin users see 'Admin Dashboard'.,Core,Done,Done
+9,Navigation,Global Navigation,Profile dropdown menu,"Click profile avatar to access role switcher, settings, messages, and logout.",Core,Done,"For mobile view - profile, settings is not found"
+10,Navigation,Notifications,Notification bell,"Header bell icon shows unread count. Clicking opens a dropdown listing recent notifications (applications received, reviews, connection requests, system alerts). Notifications can be marked as read.",Standard,Done,No notification bell present
+11,Navigation,Notifications,Connection requests,Pending connection requests are shown in the header and can be accepted or rejected in one click.,Standard,Done,"For mobile view, connection request is pending"
+HOME DASHBOARD,,,,,,,
+12,Home Dashboard,Dashboard,Personalised welcome,Homepage greets the user by name with role-appropriate context and content.,Core,Done,Done
+13,Home Dashboard,Dashboard,New user setup prompts,"First-time users see actionable setup steps: complete profile, explore jobs, connect with peers.",Core,Done,Pending
+14,Home Dashboard,Dashboard,Recommended listings,Horizontally scrollable row of recommended jobs and projects based on the user's profile.,Core,Done,Done
+15,Home Dashboard,Dashboard,In-progress items,"Displays the user's active mentorships, supervisions, projects, and event registrations with quick navigation links.",Core,Done,Done
+16,Home Dashboard,Dashboard,Upcoming events,Cards showing the user's next events with date and location at a glance.,Standard,Done,Pending
+17,Home Dashboard,Dashboard,Suggestions sidebar,Suggested mentors and courses personalised to the user's interests.,Standard,Done,Pending
+18,Home Dashboard,Dashboard,Role-aware content,Students see internship and early-career content; Professionals see consulting opportunities; Companies see a hiring dashboard shortcut.,Core,Done,Pending
+JOBS,,,,,,,
+19,Jobs,Browse & Discover,Browse jobs,"Scrollable job listings with a filter sidebar to narrow by location, job type, experience level, salary range, and work mode.",Core,Done,Done
+20,Jobs,Browse & Discover,Job card,"Each listing shows title, company, location, salary, job type, and a save toggle. Featured jobs are visually highlighted.",Core,Done,Done
+21,Jobs,Browse & Discover,Job detail page,"Full listing view: description, requirements, compensation, benefits, company info, and apply CTA.",Core,Done,Done
+22,Jobs,Browse & Discover,Student role restrictions,"Students automatically see only internships, volunteering roles, and early-career jobs — other listings are filtered out.",Core,Done,Pending
+23,Jobs,Browse & Discover,Saved jobs,Users can save jobs and view them in a dedicated 'Saved' tab.,Core,Done,Done
+24,Jobs,Browse & Discover,Similar jobs,The detail page surfaces a row of similar jobs to encourage discovery.,Standard,Done,Done
+25,Jobs,Browse & Discover,Cross-module nudge,"When results are sparse, users are prompted to explore related modules like Projects or Events.",Standard,Done,Done
+26,Jobs,Apply,Apply with Profile,"One-click application using the user's platform profile. User reviews a profile snapshot, optionally adds a cover letter, and submits.",Core,Done,Done
+27,Jobs,Apply,Apply via External Link,"For jobs with an external application portal, users are directed to the employer's site.",Core,Done,Pending
+28,Jobs,Apply,Application status tracking,"Users track all job applications in one place with status labels: Applied, Shortlisted, Accepted, Hired, Rejected.",Core,Done,Done
+29,Jobs,Apply,Share job,"Share any job listing via WhatsApp, email, LinkedIn, or copy link.",Core,Done,Done
+30,Jobs,Apply,Report listing,Users can flag a job as inappropriate with a reason. Reports are sent to the admin queue.,Core,Done,Done
+31,Jobs,Post a Job,Create job listing,Companies create a job through a guided 4-step form: Basic Info → Requirements & Skills → Compensation & Benefits → Review.,Core,Done,Done
+32,Jobs,Post a Job,Save as draft,A job can be saved as a draft at any step and returned to later.,Core,Done,Pending
+33,Jobs,Post a Job,Preview before submitting,"Before submission, the poster sees exactly how the job will appear to applicants.",Core,Done,Done
+34,Jobs,Post a Job,Compliance checklist,"A mandatory pre-submission checklist ensures the listing meets platform standards: non-discriminatory language, salary disclosed, valid deadline, contact details.",Core,Done,Pending
+35,Jobs,Post a Job,Submit for admin approval,"On submission, the listing enters a review queue. It goes live only after admin approval.",Core,Done,Done
+36,Jobs,Post a Job,Edit job listing,Posters can edit any draft or active listing using the same guided form.,Core,Done,Pending
+37,Jobs,Manage Applications,My Jobs dashboard,"Company sees all their job listings organised by status: Drafts, Under Review, Active, Rejected, Closed.",Core,Done,Done
+38,Jobs,Manage Applications,View applicants,"Click any listing to see all applicants with their profile, application date, and current status.",Core,Done,Pending
+39,Jobs,Manage Applications,Respond to applicants,Update each applicant's status: Pending → Shortlisted → Accepted → Hired or Rejected.,Core,Done,Pending
+40,Jobs,Manage Applications,Listing actions,"Each listing card has a menu to Edit, Close, Extend deadline, Delete, Duplicate, or Archive.",Core,Done,Pending
+41,Jobs,Admin Review,Jobs review queue,"Admin sees all submitted jobs awaiting review, filterable by status.",Core,Done,Pending
+42,Jobs,Admin Review,Approve or reject listing,"Admin can approve (listing goes live), reject (with a message to the poster), or request edits.",Core,Done,Pending
+43,Jobs,Admin Review,Bulk approve,Admin can select multiple listings and approve them in one action.,Enhanced,Done,Done
+PROJECTS,,,,,,,
+44,Projects,Browse & Discover,Browse projects,"Scrollable project listings with filters for type, segment, format, level, and duration.",Standard,Done,Done
+45,Projects,Browse & Discover,Project card & detail,"Cards show title, organisation, duration, and required skills. Detail page includes team roles, compensation, and timeline.",Standard,Done,Done
+46,Projects,Browse & Discover,Save & share projects,"Users can save projects and share them via link, WhatsApp, or email.",Standard,Done,Done
+47,Projects,Apply,Apply with Statement of Interest,Applicants submit a short Statement of Interest alongside their profile when applying for a project.,Standard,Done,Done
+48,Projects,Post a Project,Create project listing,4-step guided form: Basics → Team & Details → Compensation & Timeline → Review. Both Companies and Professionals can post.,Standard,Done,Done
+49,Projects,Post a Project,"Draft, compliance & submit","Same draft-save, compliance checklist, and admin-approval flow as Jobs.",Standard,Done,Pending
+50,Projects,Manage Applications,My Projects dashboard,All project listings organised by status with applicant counts.,Standard,Done,Done
+51,Projects,Manage Applications,View & respond to applicants,View applicant profiles and update their status.,Standard,Not Started,Blocked
+52,Projects,Admin Review,Projects review queue,Admin review queue for submitted project listings.,Standard,Done,Done
+REFERRALS,,,,,,,
+53,Referrals,Browse & Discover,Browse referrals,"Browse referral opportunities sorted by urgency and deadline, with urgency badges on cards.",Standard,Done,Done
+54,Referrals,Browse & Discover,Referral card & detail,"Cards show specialization, location, urgency, and deadline. Detail page includes prerequisites, client info, and experience requirements.",Standard,Done,Done
+55,Referrals,Browse & Discover,Save & share referrals,Save referrals and share via link or messaging apps.,Standard,Done,Done
+56,Referrals,Apply,Respond to a referral,Users submit a note and qualifications to express interest in a referral opportunity.,Standard,Done,Pending
+57,Referrals,Post a Referral,Create referral listing,3-step form: Basic Info → Details & Requirements → Review. Both Companies and Professionals can create referrals.,Standard,Done,Done
+58,Referrals,Post a Referral,"Draft, compliance & submit","6-item compliance checklist covering confidentiality, ethics, accuracy, and deadlines before submission.",Standard,Done,Pending
+59,Referrals,Manage Respondents,My Referrals dashboard,"All referral listings organised by status (Draft, Pending, Active, Closed).",Standard,Done,Done
+60,Referrals,Manage Respondents,View & respond to respondents,See all who responded and update their status: Pending → Shortlisted → Accepted / Declined.,Standard,Done,Pending
+61,Referrals,Admin Review,Referrals review queue,Admin review queue for submitted referral listings.,Standard,Done,Done
+COURSES,,,,,,,
+62,Courses,Browse & Discover,Browse courses,"Course listings with filters for specialization, mode (online/offline), duration, fees, and outcome.",Standard,Done,Done
+63,Courses,Browse & Discover,Course card & detail,"Cards show title, provider, mode, duration, and rating. Detail page includes full curriculum, schedule, instructor profile, and prerequisites.",Standard,Done,Done
+64,Courses,Browse & Discover,Ratings & reviews,"Each course shows a star rating with a full review section: rating distribution, individual reviews, and a write-a-review form.",Standard,Done,Done
+65,Courses,Browse & Discover,Save & share courses,Save courses for later and share via link or messaging apps.,Standard,Done,Done
+66,Courses,Browse & Discover,Add to calendar,Course sessions can be saved directly to the user's calendar via a downloadable .ics file.,Enhanced,Done,Done
+67,Courses,Enrol,Enrol in a course,"Enrolment checks prerequisites from the user's profile, confirms details, and submits. A success confirmation is shown.",Standard,Done,Done
+68,Courses,Enrol,Track enrolments,"Users see all courses in one place with tabs for Explore, Enrolled, Saved, and Completed.",Standard,Done,Done
+69,Courses,Enrol,Company: nominate employees,Companies can nominate employees for a course in bulk by selecting from their team roster.,Enhanced,Done,Done
+70,Courses,Enrol,Company: request a course,Companies can submit a training request describing their team's learning need.,Enhanced,Done,Done
+71,Courses,Post a Course,Create course listing,Multi-step form: Course Info → Curriculum & Schedule → Pricing & Enrolment → Preview. Both Companies and Professionals can post.,Standard,Done,Pending
+72,Courses,Post a Course,"Draft, compliance & submit","Same draft-save, compliance checklist, and admin-approval flow.",Standard,Done,Pending
+73,Courses,Manage Enrolments,My Courses dashboard,All course listings with enrolment counts and status badges.,Standard,Done,Pending
+74,Courses,Manage Enrolments,Respond to enrolment requests,"Review each enrolment request and update status: Accepted, Waitlisted, Rejected, or Enrolled.",Standard,Done,Pending
+75,Courses,Admin Review,Courses review queue,Admin review queue for submitted course listings.,Standard,Done,Done
+EVENTS,,,,,,,
+76,Events,Browse & Discover,Browse events,"Event listings with filters for status, type, format, and location. Cards display tags like Trending, Featured, and Upcoming.",Standard,Done,Done
+77,Events,Browse & Discover,Event card & detail,"Cards show title, date, location, and event type. Detail page includes agenda, speakers, venue, and all participation options.",Standard,Done,Done
+78,Events,Browse & Discover,"Save, share & report events","Save events, share via link or apps, or flag inappropriate listings.",Standard,Done,Done
+79,Events,Browse & Discover,Add to calendar,Any event can be saved to the user's calendar via a downloadable .ics file.,Enhanced,Done,Done
+80,Events,Participate,RSVP to an event,Users register their attendance through a quick RSVP form.,Standard,Done,Pending
+81,Events,Participate,Submit a paper,Users submit an abstract and upload a paper for events with a Call for Papers.,Standard,Done,Done
+82,Events,Participate,Apply as a speaker,Users submit a speaker bio and proposed topics for events seeking speakers.,Standard,Done,Done
+83,Events,Participate,Express sponsorship interest,Organisations can submit interest in sponsoring an event by selecting a tier and providing details.,Standard,Done,Pending
+84,Events,Post an Event,Create event listing,"Extended guided form: Basic Info → Schedule & Venue → Speakers & Agenda → Participation Options (toggle RSVP, Papers, Speakers, Sponsorship) → Preview.",Standard,Done,Pending
+85,Events,Post an Event,Configure participation types,Organisers choose which participation types to enable for each event and configure each form individually.,Standard,Done,Pending
+86,Events,Post an Event,"Draft, compliance & submit","Same draft-save, compliance checklist, and admin-approval flow.",Standard,Done,Pending
+87,Events,Manage Registrations,My Events dashboard,All event listings with registration counts per participation type.,Standard,Done,Pending
+88,Events,Manage Registrations,View & respond to registrations,"Separate tabs for RSVPs, paper submissions, speaker applications, and sponsorship interests. Each registrant's status can be updated.",Standard,Done,Pending
+89,Events,Admin Review,Events review queue,Admin review queue for submitted event listings.,Standard,Done,Done
+SUPERVISION,,,,,,,
+90,Supervision,Browse & Discover,Browse supervisors,"Supervision listings with filter controls. Supervisor cards show specialization, mode, star rating, and fee.",Standard,Done,Done
+91,Supervision,Browse & Discover,Supervisor profile,"Full profile: bio, domain, specializations, session mode, fee, and reviews with a direct apply CTA.",Standard,Done,Done
+92,Supervision,Browse & Discover,Save & share,Save supervisors and share listings via link or apps.,Standard,Done,Done
+93,Supervision,Apply,Apply for supervision,Users apply directly from the supervisor's profile through a confirmation modal.,Standard,Done,Done(professtionals don't have this option)
+94,Supervision,Post Supervision,Create supervision listing,Multi-step guided form with brochure upload. Both Companies and Professionals can post.,Standard,Done,Pending
+95,Supervision,Post Supervision,"Draft, compliance & submit","Same draft-save, compliance checklist, and admin-approval flow.",Standard,Done,Pending
+96,Supervision,Manage Applicants,My Supervision dashboard,All supervision listings organised by status with applicant counts.,Standard,Done,Pending
+97,Supervision,Manage Applicants,View & respond to applicants,Review applicants and update status: Pending → Accepted / Waitlisted / Rejected / Enrolled.,Standard,Done,Pending
+98,Supervision,Supervision Hub,Hub workspace,"After acceptance, both supervisor and supervisee access a dedicated workspace with all collaboration tools in one place.",Enhanced,Done,Pending
+99,Supervision,Supervision Hub,Session scheduling,"Schedule supervision sessions with date, time, and agenda. Sessions appear in a calendar view.",Enhanced,Done,Done
+100,Supervision,Supervision Hub,Participant management,"View all participants with their roles, status, and contact options.",Enhanced,Done,Pending
+101,Supervision,Supervision Hub,Discussion forum,Threaded discussion board for questions and replies within the supervision group.,Enhanced,Done,Done
+102,Supervision,Supervision Hub,Resource sharing,Upload or link resources that all participants can download or view.,Enhanced,Done,Done
+103,Supervision,Supervision Hub,Attendance & hours tracking,"Log sessions, mark attendance, and track cumulative hours for each participant.",Enhanced,Done,Pending
+104,Supervision,Supervision Hub,Assessment,Review performance metrics and add notes on each participant's progress.,Enhanced,Done,Pending
+105,Supervision,Supervision Hub,Guidelines,"Display the supervision agreement, platform rules, and expectations for all participants.",Enhanced,Done,Done
+106,Supervision,Supervision Hub,Calendar integration,Sessions can be saved to personal calendars via downloadable .ics files.,Enhanced,Done,Pending
+107,Supervision,Admin Review,Supervision review queue,Admin review queue for submitted supervision listings.,Standard,Done,Done
+MENTORING,,,,,,,
+108,Mentoring,Browse & Discover,Browse mentors & cohorts,"Mentoring cohort listings with filter controls. Mentor cards show specialization, cohort type, star rating, and fee.",Standard,Done,Pending
+109,Mentoring,Browse & Discover,Mentor profile,"Full profile: bio, domain, mentorship focus, fee, and reviews with a direct join CTA.",Standard,Done,Done
+110,Mentoring,Browse & Discover,Save & share,Save mentor listings and share via link or apps.,Standard,Done,Done
+111,Mentoring,Apply,Join a mentoring cohort,Users apply to join a cohort from the mentor's profile through a confirmation modal.,Standard,Done,Done
+112,Mentoring,Post a Cohort,Create cohort listing,Multi-step guided form for creating a mentoring cohort. Both Companies and Professionals can post.,Standard,Done,Pending
+113,Mentoring,Post a Cohort,"Draft, compliance & submit","Same draft-save, compliance checklist, and admin-approval flow.",Standard,Done,Pending
+114,Mentoring,Manage Applicants,My Mentoring dashboard,All cohort listings organised by status with applicant counts.,Standard,Done,Pending
+115,Mentoring,Manage Applicants,View & respond to applicants,Review applicants and update status: Pending → Accepted / Waitlisted / Rejected / Enrolled.,Standard,Done,Pending
+116,Mentoring,Mentoring Hub,Hub workspace,Accepted cohort members access a shared workspace with all collaboration tools.,Enhanced,Done,Done
+117,Mentoring,Mentoring Hub,Session scheduling (1:1 & group),Schedule both 1:1 and group sessions with calendar display.,Enhanced,Done,Done
+118,Mentoring,Mentoring Hub,Participant management,View all cohort members with their roles.,Enhanced,Done,Done
+119,Mentoring,Mentoring Hub,Q&A / Discussion forum,Threaded Q&A board for cohort questions and discussions.,Enhanced,Done,Done
+120,Mentoring,Mentoring Hub,Resource sharing,Upload or link learning resources for all cohort members.,Enhanced,Done,Done
+121,Mentoring,Mentoring Hub,Attendance & hours tracking,Log sessions and track cumulative hours for each cohort member.,Enhanced,Done,Pending
+122,Mentoring,Mentoring Hub,Assessment,Track performance and add progress notes for each member.,Enhanced,Done,Pending
+123,Mentoring,Mentoring Hub,Calendar integration,Sessions can be saved to personal calendars via downloadable .ics files.,Enhanced,Done,Done
+124,Mentoring,Admin Review,Mentoring review queue,Admin review queue for submitted mentoring cohort listings.,Standard,Done,Done
+FUNDING,,,,,,,
+125,Funding,Browse & Discover,Browse funding opportunities,"Funding listings with filters for type, eligibility, amount range, and deadline.",Enhanced,Done,Done
+126,Funding,Browse & Discover,Funding card & detail,"Cards show funder, amount, deadline, and eligibility. Detail page covers description, application process, and full eligibility criteria.",Enhanced,Done,Done
+COMMUNITY,,,,,,,
+127,Community,Circles,Browse & join circles,Browse community circles by topic or interest and join to access their feed.,Enhanced,Done,Done
+128,Community,Circles,Circle feed,"Inside a circle, members see posts with likes, comments, and shares in a scrollable feed.",Enhanced,Done,Done(Likes is missing)
+129,Community,Circles,Create a post,Members create posts with text and optional images within any circle they've joined.,Enhanced,Done,Done(No opion for image upload)
+130,Community,Circles,Create a circle,"Users can start a new community circle with a name, description, category, and privacy setting.",Enhanced,Done,Done
+131,Community,Peer Pods,Browse & join pods,Peer pods are small groups for peer support. Users can browse by topic and join pods of interest.,Enhanced,Done,Done
+132,Community,Peer Pods,Pod workspace,"An active session view showing participants, agenda, timer, notes, and a discussion space.",Enhanced,Done,Done
+133,Community,Peer Pods,Confidentiality agreement,"Before joining a pod, users must accept a confidentiality agreement to protect session privacy.",Enhanced,Done,Done
+134,Community,Peer Pods,Create a pod,"Users can create a new peer pod with a topic, size limit, schedule, and description.",Enhanced,Done,Done
+135,Community,Open Mic,Browse Open Mic posts,"A public forum where members share thoughts, insights, and experiences in a post feed.",Enhanced,Done,Done
+136,Community,Open Mic,Post detail & comments,Full post view with a comments thread and reactions.,Enhanced,Done,Done
+137,Community,Open Mic,Write an Open Mic post,Users submit a titled post with content and tags for the broader community to read.,Enhanced,Done,Done
+NETWORK,,,,,,,
+138,Network,People,Browse people,"Search and browse platform members with filters. Cards show name, role, specialization, and location.",Standard,Done,Done
+139,Network,People,View person profile,Full profile page accessible from any person card.,Standard,Done,Done
+140,Network,People,Connect & message,Send connection requests and message any member directly from their card or profile.,Standard,Done,Done
+141,Network,Companies,Browse companies,"Search and browse companies with filters. Cards show name, industry, size, and location.",Standard,Done,Done
+142,Network,Companies,Company profile,"Full company page: overview, active listings, team members, company updates, and a follow button.",Standard,Done,Done
+143,Network,Events,Browse events in Network,"The Network section also surfaces event listings, giving users another path to discover events.",Standard,Done,Done
+PROFILE,,,,,,,
+144,Profile,My Profile,Profile page,"Personal profile with tabs: About (bio, education, experience, skills, certifications), Activity, Connections, Settings, and Reviews.",Core,Done,Pending
+145,Profile,My Profile,Role badge,"A visible role badge (Student, Professional, Company, Admin) appears on the user's profile and cards throughout the platform.",Core,Done,Pending
+146,Profile,My Profile,Reviews tab,Others can leave reviews and star ratings on a user's profile. The tab shows a rating summary and all reviews received.,Standard,Done,Pending
+147,Profile,My Profile,Notification settings,"Users control which types of notifications they receive by email, toggled per category (Jobs, Events, Courses, etc.).",Enhanced,Done,Pending
+148,Profile,Specialist Profiles,Mentor profile page,"A dedicated profile for mentors showing bio, domain, mentorship focus, fee, reviews, and a request mentorship CTA.",Standard,Done,Pending
+149,Profile,Specialist Profiles,Supervisor profile page,"A dedicated profile for supervisors showing bio, domain, session mode, fee, and reviews.",Standard,Done,Pending
+150,Profile,Specialist Profiles,Company profile page,"A dedicated profile for companies showing overview, active listings, team, and recent updates.",Standard,Done,Pending
+COMPANY DASHBOARD,,,,,,,
+151,Company Dashboard,Overview,Dashboard home,"A central hub for companies showing total listings, active listings, total applications, and listings pending review — all in one stats row.",Core,Done,Done
+152,Company Dashboard,Overview,Module tabs,"Tabs across the dashboard for each module: Jobs, Projects, Courses, Events, Supervision, Mentoring, Referrals.",Core,Done,Done
+153,Company Dashboard,Overview,Status filter tabs,"Within each module tab, filter listings by All, Drafts, Under Review, Active, Rejected, Changes Needed, or Closed.",Core,Done,Done
+154,Company Dashboard,Overview,Listing management actions,"Each listing card has a menu to Edit, Close, Extend deadline, Delete, Duplicate, or Archive.",Core,Done,Done
+155,Company Dashboard,Overview,Status lifecycle display,A visual progress timeline on each listing card showing where it is in its lifecycle.,Standard,Done,Pending
+156,Company Dashboard,Overview,Quick status update,Change a listing's status directly from the dashboard without opening the full edit form.,Standard,Done,Done
+157,Company Dashboard,Overview,Candidate directory,"Search, filter, and save profiles of platform members. Download CVs (consent-gated) and send connection requests.",Enhanced,Done,Pending
+158,Company Dashboard,Requests,Request a course,"Submit a training request describing learning needs, team size, and budget for course providers to respond to.",Enhanced,Done,Done
+159,Company Dashboard,Requests,Request supervision,Submit a supervision request for a team or individual.,Enhanced,Done,Done
+160,Company Dashboard,Requests,Request mentoring,Submit a mentoring request for a team or cohort.,Enhanced,Done,Done
+ADMIN,,,,,,,
+161,Admin,Overview,Admin dashboard home,"A summary view showing pending review counts per module, recent platform activity, and flagged items.",Core,Done,Done
+162,Admin,Review Queue,Review listings,"All submitted listings across every module appear in a unified review queue, organised by module tabs and filterable by status.",Core,Done,Done
+163,Admin,Review Queue,Approve a listing,Admin approves a listing; it immediately goes live on the platform.,Core,Done,Done
+164,Admin,Review Queue,Reject a listing,Admin rejects a listing with a written message. The poster is notified and can revise and resubmit.,Core,Done,Pending
+165,Admin,Review Queue,Request edits,Admin can request specific changes from the poster without fully rejecting the listing.,Core,Done,Done
+166,Admin,Review Queue,Bulk approve,Select multiple listings and approve them in a single action.,Enhanced,Done,Done
+167,Admin,Reports,Reports queue,"All user-flagged listings appear here with the reporter's identity, reason, and the listing in context.",Standard,Done,Done
+168,Admin,Reports,Handle a report,"Admin can warn the poster, remove the listing, or dismiss the report.",Standard,Done,Pending
+169,Admin,Statistics,Platform statistics,"Charts showing: listings created per month, applications per listing, time-to-approve, listings by module, and user growth over time.",Enhanced,Done,Done
+170,Admin,Content Management,Taxonomy management,"Add, edit, or delete the platform's categories, specializations, skills, and filter options used across all modules.",Enhanced,Done,Done
+PLATFORM FEATURES,,,,,,,
+171,Platform Features,Messaging,Direct messaging,Users can message any other member from their profile or card. A full-screen conversation view shows message history with sent/received bubbles.,Standard,Done,Done
+172,Platform Features,Messaging,Conversation search,Search through existing conversations by name to quickly find a thread.,Standard,Done,Pending
+173,Platform Features,Reviews & Ratings,"Reviews on courses, mentors & supervisors","After completing a course or supervision, users leave a star rating and written review. Reviews display with a rating distribution bar.",Standard,Done,Pending
+174,Platform Features,Reviews & Ratings,Profile reviews,"Users can receive reviews on their profile, visible to anyone who visits it.",Standard,Done,Pending
+175,Platform Features,Share & Report,Share any listing,"Every listing across all modules can be shared via WhatsApp, email, LinkedIn, or a copy link.",Core,Done,Done
+176,Platform Features,Share & Report,Report any listing,Any user can flag a listing as inappropriate. Reports go directly to the admin reports queue.,Core,Done,Done
+177,Platform Features,Currency,Multi-currency display,"Fees, salaries, and compensation across the platform display in the correct currency symbol (₹ INR, $ USD, £ GBP, € EUR).",Standard,Done,Done
+177 features · All P0–P3 items built · 1 known gap (Projects: view applicants) ,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+PsycHIRE — Known Gaps & Deferred Items,,,,,,,
+Module,Area,Feature,Flow / Notes,Priority,Build,QA,Reason
+Projects,Management,ProjectApplicationsPage,Listing card → 'Applications' → view/respond to applicants,P2,Not Started,Blocked,Page file missing; navigation exists but no component
+Platform,Payment,Payment gateway integration,Checkout → Razorpay/Stripe → receipt,P4,Deferred,—,Phase II; mark with 'Payment Pending' in UI
+Platform,Payment,Invoice generation,Completed payment → generate PDF invoice,P4,Deferred,—,Depends on payment
+Platform,Email,Real email sending,Notification triggers → actual email delivery,P4,Deferred,—,UI shows templates; backend needed
+Platform,AI,AI-matched recommendations,ML-based profile-to-listing matching,P4,Deferred,—,Current 'recommended' uses mock data
+Platform,Collab,Collaboration Hub,Post-selection workspace for projects,P4,Deferred,—,Needs spec from reference site
+Platform,Payment,Revenue sharing,Platform fee calculation and distribution,P4,Deferred,—,"Business logic, not UI"

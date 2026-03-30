@@ -128,7 +128,7 @@ export function ApplicationModal({ isOpen, onClose, onSubmitted, projectTitle }:
                               placeholder="e.g. Research Assistant"
                               value={formData.role}
                               onChange={(e) => setFormData({...formData, role: e.target.value})}
-                              className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                              className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
                           />
                       </div>
                   </div>
@@ -140,7 +140,7 @@ export function ApplicationModal({ isOpen, onClose, onSubmitted, projectTitle }:
                           <select 
                               value={formData.experienceLevel}
                               onChange={(e) => setFormData({...formData, experienceLevel: e.target.value})}
-                              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all appearance-none cursor-pointer"
+                              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all appearance-none cursor-pointer"
                           >
                               <option value="">Select level</option>
                               <option value="Beginner">Beginner</option>
@@ -164,7 +164,7 @@ export function ApplicationModal({ isOpen, onClose, onSubmitted, projectTitle }:
                               placeholder="e.g. 10-15 hrs/week"
                               value={formData.timeAvailability}
                               onChange={(e) => setFormData({...formData, timeAvailability: e.target.value})}
-                              className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                              className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
                           />
                       </div>
                   </div>
@@ -179,7 +179,7 @@ export function ApplicationModal({ isOpen, onClose, onSubmitted, projectTitle }:
                               placeholder="e.g. $20/hr"
                               value={formData.expectedCompensation}
                               onChange={(e) => setFormData({...formData, expectedCompensation: e.target.value})}
-                              className="w-full pl-9 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                              className="w-full pl-9 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
                           />
                       </div>
                   </div>
@@ -195,7 +195,7 @@ export function ApplicationModal({ isOpen, onClose, onSubmitted, projectTitle }:
                           placeholder="https://..."
                           value={formData.portfolioUrl}
                           onChange={(e) => setFormData({...formData, portfolioUrl: e.target.value})}
-                          className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all"
+                          className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
                       />
                   </div>
               </div>
@@ -208,7 +208,7 @@ export function ApplicationModal({ isOpen, onClose, onSubmitted, projectTitle }:
                       placeholder="Explain your interest and fit for the project..."
                       value={formData.coverLetter}
                       onChange={(e) => setFormData({...formData, coverLetter: e.target.value})}
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all resize-none"
                   />
                   <p className="text-xs text-gray-500">Briefly describe your relevant experience and motivation.</p>
               </div>
@@ -221,7 +221,7 @@ export function ApplicationModal({ isOpen, onClose, onSubmitted, projectTitle }:
                       placeholder="Why are you interested in this specific project? What unique value would you bring?"
                       value={formData.statementOfInterest}
                       onChange={(e) => setFormData({...formData, statementOfInterest: e.target.value})}
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all resize-none"
                   />
                   <p className="text-xs text-gray-500">This statement will be shared with the project lead alongside your profile.</p>
               </div>
@@ -241,7 +241,7 @@ export function ApplicationModal({ isOpen, onClose, onSubmitted, projectTitle }:
           <button 
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-brand-yellow text-white px-8 py-2.5 rounded-lg font-bold text-sm hover:bg-brand-yellow-hover transition-all shadow-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="bg-brand-secondary text-white px-8 py-2.5 rounded-lg font-bold text-sm hover:bg-brand-secondary-hover transition-all shadow-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
                 <>

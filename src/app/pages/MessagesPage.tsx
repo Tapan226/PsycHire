@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { Send, ArrowLeft, MessageSquare, X } from 'lucide-react';
+import { Send, ArrowLeft, MessageSquare, X, Search } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { Portal } from '@/app/components/shared/Portal';
 import {
@@ -37,6 +37,7 @@ export function MessagesPage({ onNavigate, onClose, initialConversationPersonId 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [inputText, setInputText] = useState('');
   const [mobileShowChat, setMobileShowChat] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Lock body scroll & handle Escape key
@@ -128,12 +129,30 @@ export function MessagesPage({ onNavigate, onClose, initialConversationPersonId 
               mobileShowChat ? 'hidden md:flex' : 'flex'
             }`}
           >
-            <div className="px-6 pt-6 pb-4">
+            <div className="px-6 pt-6 pb-2">
               <h2 className="text-[18px] font-extrabold text-gray-900">Messages</h2>
             </div>
 
+            <div className="px-4 pb-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                <input
+                  type="text"
+                  placeholder="Search conversations..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-transparent focus:bg-white focus:border-brand-primary/20 rounded-lg text-sm focus:ring-2 focus:ring-brand-primary/5 transition-all outline-none"
+                />
+              </div>
+            </div>
+
             <div className="flex-1 overflow-y-auto">
-              {conversations.map(conv => {
+              {conversations.filter(conv => {
+                if (!searchQuery.trim()) return true;
+                const q = searchQuery.toLowerCase();
+                return conv.person.name.toLowerCase().includes(q)
+                  || conv.messages.some(m => m.text.toLowerCase().includes(q));
+              }).map(conv => {
                 const lastMsg = conv.messages[conv.messages.length - 1];
                 const isActive = conv.id === activeId;
                 const isUnread = conv.unreadCount > 0;

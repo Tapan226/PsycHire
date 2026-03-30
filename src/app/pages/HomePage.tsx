@@ -14,6 +14,12 @@ import {
   Banknote,
   Calendar,
   Globe,
+  CheckCircle2,
+  Circle,
+  GraduationCap,
+  Sparkles,
+  FileText,
+  User as UserIcon,
 } from "lucide-react";
 import { User } from "@/app/App";
 import { Chip } from "@/app/components/Chip";
@@ -130,7 +136,7 @@ interface HomePageProps {
   isNewUser?: boolean;
 }
 
-export function HomePage({ onNavigate, user }: HomePageProps) {
+export function HomePage({ onNavigate, user, isNewUser }: HomePageProps) {
   const firstName = user?.name.split(" ")[0] || "Jane";
   const isProfessional = user?.role === "Professional";
 
@@ -188,6 +194,11 @@ export function HomePage({ onNavigate, user }: HomePageProps) {
           </div>
         </div>
       </div>
+
+      {/* ═══ NEW USER SETUP CHECKLIST ═══ */}
+      {isNewUser && (
+        <SetupChecklist onNavigate={onNavigate} />
+      )}
 
       {/* ═══ BODY ═══ */}
       <div className="max-w-[1440px] mx-auto px-6 lg:px-10 w-full py-10 pb-14">
@@ -408,6 +419,99 @@ export function HomePage({ onNavigate, user }: HomePageProps) {
               </div>
             </section>
           </aside>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── New User Setup Checklist ─── */
+
+const SETUP_STEPS = [
+  { id: 'photo', label: 'Upload a profile photo', description: 'Help others recognise you', icon: UserIcon, nav: 'Profile' },
+  { id: 'education', label: 'Add your education', description: 'Degree, institution, and year', icon: GraduationCap, nav: 'Profile' },
+  { id: 'skills', label: 'Add your skills & interests', description: 'Get matched to relevant opportunities', icon: Sparkles, nav: 'Profile' },
+  { id: 'resume', label: 'Upload your resume', description: 'Apply to jobs with one click', icon: FileText, nav: 'Profile' },
+  { id: 'explore', label: 'Explore opportunities', description: 'Browse jobs, projects, and courses', icon: Briefcase, nav: 'Opportunities' },
+];
+
+function SetupChecklist({ onNavigate }: { onNavigate: (page: string) => void }) {
+  const [completed, setCompleted] = useState<Set<string>>(new Set());
+
+  const toggle = (id: string) => {
+    setCompleted(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const progress = Math.round((completed.size / SETUP_STEPS.length) * 100);
+
+  return (
+    <div className="max-w-[1440px] mx-auto px-6 lg:px-10 w-full -mt-6 relative z-10">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden animate-fade-in">
+        {/* Header */}
+        <div className="px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100">
+          <div>
+            <h3 className="text-[16px] font-bold text-gray-900">Get started with PsycHIRE</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Complete these steps to unlock the full experience.</p>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="w-32 h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-brand-secondary rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <span className="text-sm font-bold text-gray-900">{completed.size}/{SETUP_STEPS.length}</span>
+          </div>
+        </div>
+
+        {/* Steps */}
+        <div className="divide-y divide-gray-100/70">
+          {SETUP_STEPS.map(step => {
+            const isDone = completed.has(step.id);
+            const Icon = step.icon;
+            return (
+              <div
+                key={step.id}
+                className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50/50 transition-colors group"
+              >
+                <button
+                  onClick={() => toggle(step.id)}
+                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-200 ${
+                    isDone
+                      ? 'bg-brand-secondary border-brand-secondary'
+                      : 'border-gray-300 group-hover:border-brand-secondary/60'
+                  }`}
+                >
+                  {isDone && <CheckCircle2 size={14} className="text-white" />}
+                </button>
+                <div
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                    isDone ? 'bg-gray-100 text-gray-400' : 'bg-brand-primary/[0.06] text-brand-primary'
+                  }`}
+                >
+                  <Icon size={18} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm font-semibold transition-colors ${isDone ? 'text-gray-400 line-through' : 'text-gray-900'}`}>
+                    {step.label}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">{step.description}</p>
+                </div>
+                {!isDone && (
+                  <button
+                    onClick={() => onNavigate(step.nav)}
+                    className="text-xs font-semibold text-brand-primary hover:text-brand-primary/80 transition-colors shrink-0 flex items-center gap-1"
+                  >
+                    Start <ArrowRight size={12} />
+                  </button>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

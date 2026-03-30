@@ -102,6 +102,7 @@ export function InboxPopover({ onClose }: InboxPopoverProps) {
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [inputText, setInputText] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -147,7 +148,7 @@ export function InboxPopover({ onClose }: InboxPopoverProps) {
   };
 
   return (
-    <div className="absolute top-14 right-0 w-[400px] h-[550px] bg-white rounded-xl shadow-[0_8px_40px_rgba(0,0,0,0.15)] border border-gray-100 flex flex-col overflow-hidden animate-fade-in z-50">
+    <div className="absolute top-14 right-0 w-[calc(100vw-2rem)] sm:w-[400px] h-[calc(100vh-100px)] sm:h-[550px] bg-white rounded-xl shadow-[0_8px_40px_rgba(0,0,0,0.15)] border border-gray-100 flex flex-col overflow-hidden animate-fade-in z-50">
         
         {/* Header */}
         <div className="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-4 shrink-0 z-10">
@@ -207,16 +208,26 @@ export function InboxPopover({ onClose }: InboxPopoverProps) {
               <div className="px-4 py-3 border-b border-gray-50">
                  <div className="relative">
                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                   <input 
-                     type="text" 
-                     placeholder="Search messages..." 
+                   <input
+                     type="text"
+                     placeholder="Search messages..."
+                     value={searchQuery}
+                     onChange={(e) => setSearchQuery(e.target.value)}
                      className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-transparent focus:bg-white focus:border-brand-primary/20 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary/5 transition-all outline-none"
                    />
                  </div>
               </div>
               <div className="flex-1 overflow-y-auto">
-                 {conversations.length > 0 ? (
-                   conversations.map(c => (
+                 {(() => {
+                   const filtered = searchQuery.trim()
+                     ? conversations.filter(c => {
+                         const q = searchQuery.toLowerCase();
+                         return c.participants[0].name.toLowerCase().includes(q)
+                           || c.messages.some(m => m.content.toLowerCase().includes(q));
+                       })
+                     : conversations;
+                   return filtered.length > 0 ? (
+                   filtered.map(c => (
                      <ConversationItem 
                        key={c.id} 
                        conversation={c} 
@@ -227,9 +238,10 @@ export function InboxPopover({ onClose }: InboxPopoverProps) {
                  ) : (
                    <div className="flex flex-col items-center justify-center h-48 text-gray-400 gap-2">
                      <MessageSquare size={24} className="opacity-20" />
-                     <p className="text-xs">No conversations yet.</p>
+                     <p className="text-xs">{searchQuery ? 'No matches found.' : 'No conversations yet.'}</p>
                    </div>
-                 )}
+                 );
+                 })()}
               </div>
            </div>
 

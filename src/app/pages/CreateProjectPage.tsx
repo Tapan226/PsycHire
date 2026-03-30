@@ -324,7 +324,7 @@ export function CreateProjectPage({ onBack, onNavigate, editMode = false, editPr
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <SelectField label="Project Type" value={form.projectType} onChange={v => updateField('projectType', v)} options={SELECT_OPTIONS.projectType} required />
-              <SelectField label="Segment" value={form.segment} onChange={v => updateField('segment', v)} options={SELECT_OPTIONS.segment} required />
+              <SelectField label="Industry" value={form.segment} onChange={v => updateField('segment', v)} options={SELECT_OPTIONS.segment} required />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -544,7 +544,7 @@ export function CreateProjectPage({ onBack, onNavigate, editMode = false, editPr
                 {[
                   { label: 'Title', value: form.title || '—' },
                   { label: 'Type', value: form.projectType || '—' },
-                  { label: 'Segment', value: form.segment || '—' },
+                  { label: 'Industry', value: form.segment || '—' },
                   { label: 'Format', value: form.format },
                   { label: 'Location', value: form.location || '—' },
                   { label: 'Duration', value: form.durationLabel || '—' },

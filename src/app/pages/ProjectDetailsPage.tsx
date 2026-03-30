@@ -1,8 +1,9 @@
 import React from 'react';
 import {
   ChevronLeft, Share2, Bookmark, Users, Clock, Calendar, CalendarPlus, MapPin, Globe,
-  CheckCircle2, Mail, Award, Star, FileText, Download, Tag, Flag,
+  CheckCircle2, Mail, Award, Star, FileText, Download, Tag, Flag, X, ChevronRight,
 } from 'lucide-react';
+import { Portal } from '@/app/components/shared/Portal';
 import { Tooltip } from '@/app/components/Tooltip';
 import { Chip } from '@/app/components/Chip';
 import { ApplicationModal } from '@/app/components/ApplicationModal';
@@ -22,6 +23,8 @@ interface ProjectDetailsPageProps {
 
 export function ProjectDetailsPage({ onBack, onNavigate, userRole }: ProjectDetailsPageProps) {
   const [isApplicationModalOpen, setIsApplicationModalOpen] = React.useState(false);
+  const [showRolePicker, setShowRolePicker] = React.useState(false);
+  const [selectedRole, setSelectedRole] = React.useState<string | null>(null);
   const [isSaved, setIsSaved] = React.useState(false);
   const [hasApplied, setHasApplied] = React.useState(false);
   const [shareModalOpen, setShareModalOpen] = React.useState(false);
@@ -147,7 +150,7 @@ This is a unique opportunity to work at the intersection of technology and clini
                   <CheckCircle2 size={15} className="text-green-400" /> Applied
                 </button>
               ) : (
-                <button onClick={() => setIsApplicationModalOpen(true)} className="bg-white text-teal-800 px-8 py-2.5 rounded-lg font-bold text-[14px] hover:bg-teal-50 transition-all shadow-sm tracking-wide active:scale-[0.97] duration-200 w-full lg:w-auto text-center">
+                <button onClick={() => setShowRolePicker(true)} className="bg-white text-teal-800 px-8 py-2.5 rounded-lg font-bold text-[14px] hover:bg-teal-50 transition-all shadow-sm tracking-wide active:scale-[0.97] duration-200 w-full lg:w-auto text-center">
                   Apply Now
                 </button>
               )}
@@ -408,6 +411,65 @@ This is a unique opportunity to work at the intersection of technology and clini
           />
         </div>
       </SimilarSection>
+
+      {/* Role Selection Modal */}
+      {showRolePicker && (
+        <Portal>
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-300">
+              <div className="px-7 py-5 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Select a Role</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Which role are you applying for?</p>
+                </div>
+                <button onClick={() => setShowRolePicker(false)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+                  <X size={18} />
+                </button>
+              </div>
+              <div className="p-6 flex flex-col gap-3">
+                {project.teamRoles.map((role, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedRole(role.designation)}
+                    className={`relative w-full text-left p-5 rounded-xl border-2 transition-all duration-200 ${
+                      selectedRole === role.designation
+                        ? 'border-brand-primary bg-brand-primary/[0.03] shadow-sm'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <p className="text-sm font-bold text-gray-900">{role.designation}</p>
+                    <p className="text-xs text-gray-500 mt-1">{role.experienceLevel} · {role.participants} position{role.participants > 1 ? 's' : ''}</p>
+                    {role.skills.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {role.skills.map(s => (
+                          <span key={s} className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">{s}</span>
+                        ))}
+                      </div>
+                    )}
+                    <div className={`absolute top-4 right-4 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                      selectedRole === role.designation ? 'border-brand-primary bg-brand-primary' : 'border-gray-300'
+                    }`}>
+                      {selectedRole === role.designation && <div className="w-2 h-2 rounded-full bg-white" />}
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <div className="px-6 pb-6 flex items-center gap-3">
+                <button onClick={() => setShowRolePicker(false)} className="flex-1 px-4 py-3 text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-colors">
+                  Cancel
+                </button>
+                <button
+                  onClick={() => { setShowRolePicker(false); setIsApplicationModalOpen(true); }}
+                  disabled={!selectedRole}
+                  className="flex-1 bg-brand-primary text-white px-4 py-3 rounded-xl font-bold text-sm hover:bg-[#1a3699] transition-all active:scale-[0.97] duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Continue <ChevronRight size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </Portal>
+      )}
 
       <ApplicationModal isOpen={isApplicationModalOpen} onClose={() => setIsApplicationModalOpen(false)} onSubmitted={handleApplicationSubmitted} projectTitle={project.title} />
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Post } from '@/app/data/community';
-import { MessageSquare, MoreHorizontal, Flag, Share2, BellRing, Mic, ChevronDown, ChevronUp } from 'lucide-react';
+import { MessageSquare, MoreHorizontal, Flag, Share2, BellRing, Mic, ChevronDown, ChevronUp, Heart } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { UserGroupBadge } from '@/app/components/profile/UserGroupBadge';
 import type { UserGroup } from '@/app/data/profile';
@@ -16,6 +16,8 @@ export function PostCard({ post, onReply, circleName, onClickCircle }: PostCardP
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes || 0);
 
   const isExpert = post.type === 'Expert';
   const isAnnouncement = post.type === 'Announcement';
@@ -115,12 +117,28 @@ export function PostCard({ post, onReply, circleName, onClickCircle }: PostCardP
          )}
       </div>
 
+      {/* Post Image */}
+      {post.imageUrl && (
+        <div className="mx-5 rounded-xl overflow-hidden border border-gray-100">
+          <img src={post.imageUrl} alt="" className="w-full h-auto max-h-[400px] object-cover" />
+        </div>
+      )}
+
       {/* Footer / Actions */}
       <div className="px-5 pb-4 pt-0">
-         <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
-            <button 
-                onClick={toggleComments}
+         <div className="flex items-center gap-1 pt-4 border-t border-gray-100">
+            <button
+                onClick={(e) => { e.stopPropagation(); setIsLiked(!isLiked); setLikeCount(prev => isLiked ? prev - 1 : prev + 1); }}
                 className={`flex items-center gap-2 px-3 py-1.5 -ml-3 rounded-lg transition-colors text-sm font-medium
+                    ${isLiked ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:text-red-500 hover:bg-gray-50'}
+                `}
+            >
+                <Heart size={16} className={isLiked ? 'fill-current' : ''} />
+                {likeCount > 0 ? likeCount : 'Like'}
+            </button>
+            <button
+                onClick={toggleComments}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors text-sm font-medium
                     ${showComments ? 'text-brand-primary bg-brand-primary/5' : 'text-gray-500 hover:text-brand-primary hover:bg-gray-50'}
                 `}
             >

@@ -328,9 +328,9 @@ export function ProjectFiltersPanel({ filters: rawFilters, onChange }: ProjectFi
           ))}
         </CollapsibleSection>
 
-        {/* Segment */}
+        {/* Industry */}
         <CollapsibleSection
-          title="Segment"
+          title="Industry"
           icon={<Building2 size={15} />}
           count={filters.segments.length}
           defaultOpen={false}

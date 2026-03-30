@@ -27,6 +27,7 @@ import { AdminDashboardPage } from "@/app/pages/AdminDashboardPage";
 import { CreateJobPage } from "@/app/pages/CreateJobPage";
 import { CreateProjectPage } from "@/app/pages/CreateProjectPage";
 import { JobApplicationsPage } from "@/app/pages/JobApplicationsPage";
+import { ProjectApplicationsPage } from "@/app/pages/ProjectApplicationsPage";
 import { CreateEventPage } from "@/app/pages/CreateEventPage";
 import { EventRegistrationsPage } from "@/app/pages/EventRegistrationsPage";
 import { CreateCoursePage } from "@/app/pages/CreateCoursePage";
@@ -119,6 +120,7 @@ export default function App() {
   const [showMessagesModal, setShowMessagesModal] = useState(false);
   const [editJobId, setEditJobId] = useState<string | null>(null);
   const [selectedJobIdForApps, setSelectedJobIdForApps] = useState<string | null>(null);
+  const [selectedProjectIdForApps, setSelectedProjectIdForApps] = useState<string | null>(null);
   const [editProjectId, setEditProjectId] = useState<string | null>(null);
   const [editEventId, setEditEventId] = useState<string | null>(null);
   const [selectedEventIdForRegs, setSelectedEventIdForRegs] = useState<string | null>(null);
@@ -180,7 +182,7 @@ export default function App() {
 
   // Helper to determine active nav item
   const getActiveNavItem = (page: string) => {
-    if (page === 'CompanyDashboard' || page === 'CreateJob' || page === 'EditJob' || page === 'JobApplications' || page === 'CreateProject' || page === 'EditProject' || page === 'CreateEvent' || page === 'EditEvent' || page === 'EventRegistrations' || page === 'CreateCourse' || page === 'EditCourse' || page === 'CourseEnrollments' || page === 'CreateSupervision' || page === 'CreateCohort' || page === 'SupervisionApplicants' || page === 'CohortApplicants' || page === 'CandidateSearch' || page === 'CreateReferral' || page === 'EditReferral' || page === 'ReferralRespondents') return 'My Listings';
+    if (page === 'CompanyDashboard' || page === 'CreateJob' || page === 'EditJob' || page === 'JobApplications' || page === 'ProjectApplications' || page === 'CreateProject' || page === 'EditProject' || page === 'CreateEvent' || page === 'EditEvent' || page === 'EventRegistrations' || page === 'CreateCourse' || page === 'EditCourse' || page === 'CourseEnrollments' || page === 'CreateSupervision' || page === 'CreateCohort' || page === 'SupervisionApplicants' || page === 'CohortApplicants' || page === 'CandidateSearch' || page === 'CreateReferral' || page === 'EditReferral' || page === 'ReferralRespondents') return 'My Listings';
     if (page === 'NotificationSettings') return 'Profile';
     if (page === 'AdminDashboard') return 'Admin Dashboard';
     if (page === 'JobDetails') return 'Opportunities';
@@ -193,7 +195,8 @@ export default function App() {
     if (page === 'SupervisorProfile') return 'Learning';
     if (page === 'SupervisionHub' || page === 'CohortHub') return 'Learning';
     if (page === 'RequestForm') return 'Learning';
-    if (page === 'EventDetails') return 'Network';
+    if (page === 'EventDetails') return 'Events';
+    if (page === 'EventRegistrations') return 'Events';
     if (page === 'CommunityCircle') return 'Community';
     if (page === 'PeerPods' || page === 'PodDetail' || page === 'InsidePod') return 'Community';
     if (page === 'OpenMicPostDetail') return 'Community';
@@ -280,6 +283,12 @@ export default function App() {
         setSelectedJobIdForApps(params.jobId);
         pushHistory('JobApplications');
         setCurrentPage('JobApplications');
+        return;
+      }
+      if (page === 'ProjectApplications' && params?.projectId) {
+        setSelectedProjectIdForApps(params.projectId);
+        pushHistory('ProjectApplications');
+        setCurrentPage('ProjectApplications');
         return;
       }
       if (page === 'CreateProject') {
@@ -401,8 +410,8 @@ export default function App() {
       }
       if (page === 'Events') {
         setNetworkInitialTab('events');
-        pushHistory('Network');
-        setCurrentPage('Network');
+        pushHistory('Events');
+        setCurrentPage('Events');
         return;
       }
       if (page === 'Companies') {
@@ -579,6 +588,14 @@ export default function App() {
           />
         )}
 
+        {currentPage === 'ProjectApplications' && selectedProjectIdForApps && (
+          <ProjectApplicationsPage
+            projectId={selectedProjectIdForApps}
+            onBack={goBack}
+            onNavigate={handleNavigate}
+          />
+        )}
+
         {currentPage === 'CreateEvent' && (
           <CreateEventPage
             onBack={goBack}
@@ -746,6 +763,10 @@ export default function App() {
           <MyNetworkPage onNavigate={handleNavigate} userRole={user.role} initialTab={networkInitialTab} />
         )}
 
+        {currentPage === 'Events' && (
+          <MyNetworkPage onNavigate={handleNavigate} userRole={user.role} initialTab="events" />
+        )}
+
         {currentPage === 'CompanyProfile' && selectedCompanyId && (
           <CompanyProfilePage 
             companyId={selectedCompanyId}
@@ -811,6 +832,7 @@ export default function App() {
             supervisorId={selectedSupervisorId}
             onBack={goBack}
             onNavigate={handleNavigate}
+            userRole={user.role}
           />
         )}
 

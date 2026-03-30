@@ -121,6 +121,7 @@ export function JobDetailsPage({ onBack, onNavigate, userRole }: JobDetailsPageP
     benefits: ["Comprehensive health insurance","Professional development allowance","Supervision hours for licensure","Flexible working hours","Paid time off"],
     context: { population: ["Children (3-12)","Adolescents (13-18)"], languages: ["English","Hindi","Marathi (Preferred)"] },
     company: { description: "MindCare Clinic is a leading pediatric mental health center dedicated to providing holistic and evidence-based care. Our team of experts works tirelessly to support the emotional well-being of the next generation.", website: "www.mindcareclinic.com" },
+    externalUrl: "https://mindcareclinic.com/careers/junior-child-psychologist",
     deadline: "February 15, 2026",
     roleDetails: { designation: "Junior Child Psychologist", reportingTo: "Dr. Meera Sharma, Senior Clinical Psychologist", openPositions: 2, dateOfPosting: "February 9, 2026" },
     salaryBreakdown: { fixed: "₹35,000/mo", variable: "₹5,000 - ₹25,000/mo (performance-based)", paymentTerms: "Monthly Fixed" },
@@ -414,8 +415,36 @@ export function JobDetailsPage({ onBack, onNavigate, userRole }: JobDetailsPageP
                   <h3 className="text-[13px] font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">{job.companyName}</h3>
                 </button>
                 <p className="text-[13px] text-gray-500 leading-relaxed mb-3">{job.company.description}</p>
-                <a href={`https://${job.company.website}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-blue-600 text-[13px] font-medium hover:underline"><Globe size={13} /> Visit Website</a>
+                <div className="flex items-center gap-2 mt-2">
+                  <a href={`https://${job.company.website}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-blue-600 text-[13px] font-medium hover:underline"><Globe size={13} /> Visit Website</a>
+                  <span className="text-gray-200">·</span>
+                  <button onClick={() => onNavigate?.('CompanyProfile', { companyId: 'co1' })} className="inline-flex items-center gap-1.5 text-blue-600 text-[13px] font-medium hover:underline"><Building2 size={13} /> Visit Page</button>
+                </div>
               </div>
+
+              {/* Contact Person */}
+              {job.roleDetails.reportingTo && (
+                <>
+                  <div className="h-px bg-gray-100" />
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-2.5 text-[10px] font-semibold text-gray-400 uppercase tracking-wider"><Users size={11} /> Contact Person</div>
+                    <button
+                      onClick={() => onNavigate?.('SupervisorProfile', { supervisorId: 'sup1' })}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100 w-full text-left hover:bg-blue-50/50 hover:border-blue-100 transition-all group"
+                    >
+                      <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center shrink-0 text-blue-600 font-bold text-[12px]">
+                        {job.roleDetails.reportingTo.split(' ').slice(0, 2).map(n => n[0]).join('')}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-semibold text-gray-900 group-hover:text-blue-600 transition-colors truncate">{job.roleDetails.reportingTo.split(',')[0]}</p>
+                        {job.roleDetails.reportingTo.includes(',') && (
+                          <p className="text-[11px] text-gray-500 truncate">{job.roleDetails.reportingTo.split(',').slice(1).join(',').trim()}</p>
+                        )}
+                      </div>
+                    </button>
+                  </div>
+                </>
+              )}
 
               {job.tags.length > 0 && (
                 <>
@@ -483,7 +512,7 @@ export function JobDetailsPage({ onBack, onNavigate, userRole }: JobDetailsPageP
       </SimilarSection>
 
       {/* Modals */}
-      <ApplyMethodModal isOpen={showMethodModal} onClose={() => setShowMethodModal(false)} onSelectProfile={handleSelectProfile} onSelectCustom={handleSelectCustom} jobTitle={job.title} companyName={job.companyName} />
+      <ApplyMethodModal isOpen={showMethodModal} onClose={() => setShowMethodModal(false)} onSelectProfile={handleSelectProfile} onSelectCustom={handleSelectCustom} jobTitle={job.title} companyName={job.companyName} externalUrl={job.externalUrl} />
       <ApplyWithProfileModal isOpen={showProfileApply} onClose={() => setShowProfileApply(false)} onSubmitted={handleApplicationSubmitted} jobTitle={job.title} companyName={job.companyName} />
       <ApplyJobModal isOpen={showCustomApply} onClose={() => setShowCustomApply(false)} onSubmitted={handleApplicationSubmitted} jobTitle={job.title} companyName={job.companyName} />
       <ShareModal isOpen={showShareModal} onClose={() => setShowShareModal(false)} title={`${job.title} at ${job.companyName}`} subtitle="Share this job opportunity" />

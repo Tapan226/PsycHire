@@ -313,6 +313,22 @@ export function CompanyDashboardPage({ onNavigate, user }: CompanyDashboardPageP
           </div>
         </div>
 
+        {/* Upgrade banner for referrals */}
+        {activeModule === 'referrals' && (
+          <div className="flex items-center gap-4 p-4 rounded-xl bg-amber-50 border border-amber-100 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+              <GitBranch size={18} className="text-amber-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-semibold text-gray-900">Upgrade your profile for better referral reach</p>
+              <p className="text-[12px] text-gray-500 mt-0.5">Confirm your professional credentials to access premium referral features and wider visibility.</p>
+            </div>
+            <button className="shrink-0 px-4 py-2 bg-amber-600 text-white rounded-lg text-[12px] font-bold hover:bg-amber-700 transition-colors">
+              Upgrade
+            </button>
+          </div>
+        )}
+
         {/* Listings */}
         {filtered.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col items-center justify-center py-20 gap-4">
@@ -414,6 +430,8 @@ export function CompanyDashboardPage({ onNavigate, user }: CompanyDashboardPageP
                               onNavigate('CohortApplicants', { cohortId: listing.id });
                             } else if (activeModule === 'referrals') {
                               onNavigate('ReferralRespondents', { referralId: listing.id });
+                            } else if (activeModule === 'projects') {
+                              onNavigate('ProjectApplications', { projectId: listing.id });
                             } else {
                               onNavigate('JobApplications', { jobId: listing.id });
                             }

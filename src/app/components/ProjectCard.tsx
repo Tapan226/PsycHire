@@ -122,7 +122,7 @@ export const ProjectCard = ({
       <div className="flex flex-col gap-3">
         {isFeatured && <FeaturedChip className="self-start" />}
 
-        {/* Meta row: project type + segment */}
+        {/* Meta row: project type + industry */}
         <div className="flex items-center gap-2 flex-wrap text-sm text-gray-500 font-medium">
           <span>{projectType}</span>
           <span className="text-gray-300">&middot;</span>

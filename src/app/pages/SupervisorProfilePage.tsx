@@ -19,11 +19,12 @@ interface SupervisorProfilePageProps {
   supervisorId: string;
   onBack: () => void;
   onNavigate?: (page: string, params?: any) => void;
+  userRole?: string;
 }
 
 type RequestStep = 'form' | 'confirmed';
 
-export function SupervisorProfilePage({ supervisorId, onBack, onNavigate }: SupervisorProfilePageProps) {
+export function SupervisorProfilePage({ supervisorId, onBack, onNavigate, userRole }: SupervisorProfilePageProps) {
   const supervisor = getSupervisorById(supervisorId);
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [requestStep, setRequestStep] = useState<RequestStep>('form');
@@ -51,16 +52,16 @@ export function SupervisorProfilePage({ supervisorId, onBack, onNavigate }: Supe
   return (
     <div className="flex flex-col w-full bg-white min-h-screen font-sans animate-fade-in">
       {/* COLORED HEADER */}
-      <div className="w-full bg-gradient-to-br from-[#4338ca] via-[#3730a3] to-[#312e81]">
+      <div className="w-full bg-gradient-to-br from-teal-800 via-teal-700 to-emerald-800">
         {/* Zone 1: Nav bar */}
         <div className="border-b border-white/[0.06]">
           <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-            <button onClick={onBack} className="flex items-center gap-1.5 text-indigo-200/70 hover:text-white transition-colors text-[13px] group">
+            <button onClick={onBack} className="flex items-center gap-1.5 text-teal-200/70 hover:text-white transition-colors text-[13px] group">
               <ChevronLeft size={15} className="group-hover:-translate-x-0.5 transition-transform" /> Back to Supervisors
             </button>
             <button
               onClick={() => onNavigate?.('Messages', { personId: 'p-1' })}
-              className="p-2 text-indigo-200/50 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+              className="p-2 text-teal-200/50 hover:text-white hover:bg-white/10 rounded-lg transition-all"
               title="Message"
             >
               <MessageSquare size={17} />
@@ -95,7 +96,7 @@ export function SupervisorProfilePage({ supervisorId, onBack, onNavigate }: Supe
               <h1 className="text-[26px] md:text-[30px] font-extrabold text-white tracking-tight leading-tight mb-2">{supervisor.domain}</h1>
               <div className="flex items-center gap-2 flex-wrap">
                 {supervisor.specializations.map(s => (
-                  <span key={s} className="text-[11px] font-medium text-indigo-200 bg-white/[0.08] px-2.5 py-1 rounded-full border border-white/[0.1]">{s}</span>
+                  <span key={s} className="text-[11px] font-medium text-teal-200 bg-white/[0.08] px-2.5 py-1 rounded-full border border-white/[0.1]">{s}</span>
                 ))}
               </div>
             </div>
@@ -106,14 +107,16 @@ export function SupervisorProfilePage({ supervisorId, onBack, onNavigate }: Supe
                 <span className="text-[22px] font-extrabold text-white">
                   {supervisor.isPaid ? `${RUPEE}${supervisor.feePerSession}` : 'Free'}
                 </span>
-                <span className="text-[12px] text-indigo-200/70 font-medium">per session</span>
+                <span className="text-[12px] text-teal-200/70 font-medium">per session</span>
               </div>
-              <button
-                onClick={() => setShowRequestModal(true)}
-                className="px-8 py-2.5 rounded-lg font-bold text-[14px] transition-all tracking-wide bg-white text-[#3730a3] hover:bg-indigo-50 shadow-sm active:scale-[0.97] duration-200 flex items-center gap-2 whitespace-nowrap"
-              >
-                <Send size={15} /> Request Supervision
-              </button>
+              {userRole !== 'Admin' && userRole !== 'Company' && (
+                <button
+                  onClick={() => setShowRequestModal(true)}
+                  className="px-8 py-2.5 rounded-lg font-bold text-[14px] transition-all tracking-wide bg-white text-teal-800 hover:bg-teal-50 shadow-sm active:scale-[0.97] duration-200 flex items-center gap-2 whitespace-nowrap"
+                >
+                  <Send size={15} /> Request Supervision
+                </button>
+              )}
               <span className="text-[12px] text-white/50 font-medium">
                 <span className="text-white/80 font-semibold">{supervisor.totalSupervisees}</span> guided &middot; <span className="text-white/80 font-semibold">{supervisor.activeSupervisees}</span> active
               </span>
@@ -327,7 +330,7 @@ export function SupervisorProfilePage({ supervisorId, onBack, onNavigate }: Supe
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-indigo-600 text-white font-bold text-[14px] rounded-xl hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-teal-600 text-white font-bold text-[14px] rounded-xl hover:bg-teal-700 transition-all flex items-center justify-center gap-2"
                 >
                   <Send size={15} /> Send Request
                 </button>

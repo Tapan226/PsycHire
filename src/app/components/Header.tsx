@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, LogOut, User, Settings, HelpCircle, UserPlus, Check, X, ArrowLeft, Users, Shield, Building2, GraduationCap, Stethoscope, Menu, Home, Briefcase, BookOpen, Heart, Globe } from 'lucide-react';
+import { MessageSquare, LogOut, User, Settings, HelpCircle, UserPlus, Check, X, ArrowLeft, Users, Shield, Building2, GraduationCap, Stethoscope, Menu, Home, Briefcase, BookOpen, Heart, Globe, Bell, CalendarDays } from 'lucide-react';
+import { NotificationDropdown } from '@/app/components/NotificationDropdown';
+import { MOCK_NOTIFICATIONS } from '@/app/data/notifications';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { UserGroupBadge } from '@/app/components/profile/UserGroupBadge';
 import {
@@ -63,16 +65,20 @@ export function Header({ currentPage, onNavigate, onLogout, onSwitchRole, user }
 
   // Different nav for different roles — Dashboard always first
   const navItems = isAdmin
-    ? ["Dashboard", "Admin Dashboard", "Opportunities", "Learning", "Community", "Network", "Funding"]
+    ? ["Dashboard", "Admin Dashboard", "Opportunities", "Learning", "Community", "Events", "Network", "Funding"]
     : isCompany
-      ? ["Dashboard", "My Listings", "Opportunities", "Learning", "Community", "Network", "Funding"]
-      : ["Dashboard", "Opportunities", "Learning", "Community", "Network", "Funding"];
+      ? ["Dashboard", "My Listings", "Opportunities", "Learning", "Community", "Events", "Network", "Funding"]
+      : ["Dashboard", "Opportunities", "Learning", "Community", "Events", "Network", "Funding"];
 
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [profileView, setProfileView] = useState<'menu' | 'requests'>('menu');
   const [requests, setRequests] = useState<ConnectionRequest[]>(MOCK_CONNECTION_REQUESTS);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  const unreadNotifCount = MOCK_NOTIFICATIONS.filter(n => !n.isRead).length;
 
   const userRole = user?.role || 'Student';
   const pendingRequests = requests.filter(r => r.status === 'pending');
@@ -84,6 +90,9 @@ export function Header({ currentPage, onNavigate, onLogout, onSwitchRole, user }
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsProfileMenuOpen(false);
         setProfileView('menu');
+      }
+      if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
+        setIsNotifOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -153,8 +162,31 @@ export function Header({ currentPage, onNavigate, onLogout, onSwitchRole, user }
         
         {/* 3. Right: Actions & Profile */}
         <div className="hidden lg:flex items-center justify-end gap-5 w-[200px]">
-          <div className="flex items-center gap-2">
-             <button 
+          <div className="flex items-center gap-1">
+             <div className="relative" ref={notifRef}>
+               <button
+                 onClick={() => { setIsNotifOpen(!isNotifOpen); setIsProfileMenuOpen(false); }}
+                 className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-100 ${isNotifOpen ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
+                 title="Notifications"
+               >
+                 <Bell size={18} strokeWidth={2} />
+               </button>
+               {unreadNotifCount > 0 && (
+                 <span
+                   className="absolute -top-0.5 -right-0.5 min-w-[16px] h-[16px] rounded-full bg-red-500 text-white flex items-center justify-center px-1 border-2 border-white pointer-events-none"
+                   style={{ fontSize: 9, fontWeight: 800 }}
+                 >
+                   {unreadNotifCount}
+                 </span>
+               )}
+               {isNotifOpen && (
+                 <NotificationDropdown
+                   onNavigate={(page, params) => { setIsNotifOpen(false); onNavigate(page, params); }}
+                   onClose={() => setIsNotifOpen(false)}
+                 />
+               )}
+             </div>
+             <button
                onClick={() => onNavigate('Messages')}
                className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-100 text-gray-500 hover:text-gray-900"
                title="Messages"
@@ -189,7 +221,7 @@ export function Header({ currentPage, onNavigate, onLogout, onSwitchRole, user }
 
             {/* Profile Popover — Menu View */}
             {isProfileMenuOpen && profileView === 'menu' && (
-              <div className="absolute top-full right-0 mt-3 w-[300px] bg-white rounded-2xl shadow-2xl border border-gray-200/60 animate-fade-in origin-top-right overflow-hidden z-50"
+              <div className="absolute top-full right-0 mt-3 w-[calc(100vw-2rem)] sm:w-[300px] bg-white rounded-2xl shadow-2xl border border-gray-200/60 animate-fade-in origin-top-right overflow-hidden z-50"
                 style={{ boxShadow: '0 12px 40px -8px rgba(0,0,0,0.12), 0 4px 12px -4px rgba(0,0,0,0.06)' }}
               >
                  {/* User info card */}
@@ -319,7 +351,7 @@ export function Header({ currentPage, onNavigate, onLogout, onSwitchRole, user }
 
             {/* Profile Popover — Connection Requests View */}
             {isProfileMenuOpen && profileView === 'requests' && (
-              <div className="absolute top-full right-0 mt-3 w-[400px] bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-fade-in origin-top-right">
+              <div className="absolute top-full right-0 mt-3 w-[calc(100vw-2rem)] sm:w-[400px] bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-fade-in origin-top-right">
                 {/* Header */}
                 <div className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-100 bg-gray-50/50">
                   <button
@@ -548,6 +580,7 @@ export function Header({ currentPage, onNavigate, onLogout, onSwitchRole, user }
                   'Opportunities': <Briefcase size={18} />,
                   'Learning': <BookOpen size={18} />,
                   'Community': <Users size={18} />,
+                  'Events': <CalendarDays size={18} />,
                   'Network': <Globe size={18} />,
                   'Funding': <Heart size={18} />,
                 };
@@ -589,6 +622,34 @@ export function Header({ currentPage, onNavigate, onLogout, onSwitchRole, user }
               >
                 <span className="text-gray-400"><User size={18} /></span>
                 My Profile
+              </button>
+              <button
+                onClick={() => { setIsMobileMenuOpen(false); onNavigate('Network'); }}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-all"
+                style={{ fontSize: 14, fontWeight: 500 }}
+              >
+                <span className="text-gray-400 relative">
+                  <UserPlus size={18} />
+                  {pendingRequests.length > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center px-1">{pendingRequests.length}</span>
+                  )}
+                </span>
+                Connection Requests
+              </button>
+              <button
+                onClick={() => { setIsMobileMenuOpen(false); onNavigate('NotificationSettings'); }}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-all"
+                style={{ fontSize: 14, fontWeight: 500 }}
+              >
+                <span className="text-gray-400"><Settings size={18} /></span>
+                Settings
+              </button>
+              <button
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition-all"
+                style={{ fontSize: 14, fontWeight: 500 }}
+              >
+                <span className="text-gray-400"><HelpCircle size={18} /></span>
+                Help & Support
               </button>
             </div>
           </div>

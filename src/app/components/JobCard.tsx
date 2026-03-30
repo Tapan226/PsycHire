@@ -1,4 +1,4 @@
-import { MapPin, Banknote, Bookmark, Share2, ArrowRight, Zap, Clock, Sparkles } from 'lucide-react';
+import { MapPin, Banknote, Bookmark, Share2, ArrowRight, Zap, Clock, Sparkles, Calendar } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { Chip, ChipVariant } from '@/app/components/Chip';
 import { FeaturedChip } from '@/app/components/FeaturedChip';
@@ -20,6 +20,8 @@ interface JobCardProps {
   isFeatured?: boolean;
   statusBadge?: JobStatusBadge;
   employmentType?: string;
+  datePosted?: string;
+  deadline?: string;
   compact?: boolean;
   onClick?: () => void;
   onShare?: () => void;
@@ -62,6 +64,8 @@ export const JobCard = ({
   isFeatured = false,
   statusBadge,
   employmentType,
+  datePosted,
+  deadline,
   compact = false,
   onClick,
   onShare,
@@ -163,6 +167,18 @@ export const JobCard = ({
             <MapPin size={16} className="text-gray-400" />
             <span>{location}</span>
           </div>
+          {datePosted && (
+            <div className="flex items-center gap-1.5">
+              <Calendar size={14} className="text-gray-400" />
+              <span>{datePosted}</span>
+            </div>
+          )}
+          {deadline && (
+            <div className="flex items-center gap-1.5">
+              <Clock size={14} className="text-gray-400" />
+              <span>Due {deadline}</span>
+            </div>
+          )}
           {salary && (
             <div className="flex items-center gap-1.5">
               <Banknote size={16} className="text-gray-400" />

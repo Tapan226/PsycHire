@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Briefcase, BookOpen, Users, Globe, Heart, Building2, Shield } from 'lucide-react';
+import { Home, Briefcase, BookOpen, Users, Globe, Heart, Building2, Shield, CalendarDays } from 'lucide-react';
 
 interface MobileBottomNavProps {
   currentPage: string;
@@ -25,17 +25,19 @@ export function MobileBottomNav({ currentPage, onNavigate, userRole }: MobileBot
     { id: 'opportunities', label: 'Jobs', icon: Briefcase, page: 'Opportunities' },
     { id: 'learning', label: 'Learn', icon: BookOpen, page: 'Learning' },
     { id: 'community', label: 'Community', icon: Users, page: 'Community' },
+    { id: 'events', label: 'Events', icon: CalendarDays, page: 'Events' },
     { id: 'network', label: 'Network', icon: Globe, page: 'Network' },
     { id: 'funding', label: 'Funding', icon: Heart, page: 'Funding' },
   ];
 
   const getActivePage = (page: string): string => {
-    if (['CompanyDashboard', 'CreateJob', 'EditJob', 'JobApplications', 'CreateProject', 'EditProject', 'CreateEvent', 'EditEvent', 'EventRegistrations', 'CreateCourse', 'EditCourse', 'CourseEnrollments', 'CreateSupervision', 'CreateCohort', 'SupervisionApplicants', 'CohortApplicants', 'CandidateSearch'].includes(page)) return 'CompanyDashboard';
+    if (['CompanyDashboard', 'CreateJob', 'EditJob', 'JobApplications', 'ProjectApplications', 'CreateProject', 'EditProject', 'CreateEvent', 'EditEvent', 'EventRegistrations', 'CreateCourse', 'EditCourse', 'CourseEnrollments', 'CreateSupervision', 'CreateCohort', 'SupervisionApplicants', 'CohortApplicants', 'CandidateSearch'].includes(page)) return 'CompanyDashboard';
     if (page === 'AdminDashboard') return 'AdminDashboard';
     if (['JobDetails', 'ProjectDetails', 'ReferralDetail'].includes(page)) return 'Opportunities';
     if (['CourseDetails', 'MentorProfile', 'SupervisorProfile', 'SupervisionHub', 'CohortHub', 'RequestForm'].includes(page)) return 'Learning';
     if (['CommunityCircle', 'PodDetail', 'InsidePod', 'OpenMicPostDetail'].includes(page)) return 'Community';
-    if (['EventDetails', 'CompanyProfile', 'PersonProfile'].includes(page)) return 'Network';
+    if (['EventDetails', 'EventRegistrations'].includes(page)) return 'Events';
+    if (['CompanyProfile', 'PersonProfile'].includes(page)) return 'Network';
     if (['FundingDetail'].includes(page)) return 'Funding';
     return page;
   };

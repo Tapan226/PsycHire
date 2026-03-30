@@ -56,15 +56,15 @@ interface MyCommunityPageProps {
 const SUB_TABS: Record<CommunityTab, { key: string; label: string; icon: React.ReactNode }[]> = {
   circles: [
     { key: 'my', label: 'My Circles', icon: <Bookmark size={15} /> },
-    { key: 'explore', label: 'Explore', icon: <Compass size={15} /> },
+    { key: 'explore', label: 'Browse', icon: <Compass size={15} /> },
   ],
   'peer-pods': [
     { key: 'my', label: 'My Pods', icon: <Bookmark size={15} /> },
-    { key: 'explore', label: 'Explore', icon: <Compass size={15} /> },
+    { key: 'explore', label: 'Browse', icon: <Compass size={15} /> },
   ],
   'open-mic': [
     { key: 'my', label: 'My Posts', icon: <Bookmark size={15} /> },
-    { key: 'explore', label: 'Explore', icon: <Compass size={15} /> },
+    { key: 'explore', label: 'Browse', icon: <Compass size={15} /> },
   ],
 };
 

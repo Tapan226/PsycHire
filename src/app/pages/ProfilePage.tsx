@@ -74,7 +74,7 @@ type EditSection =
   | 'supervision' | 'recognition' | 'openTo' | 'availability'
   | 'publications' | 'talks' | 'supervisionGiven' | 'mentoring' | null;
 
-type ProfileTab = 'overview' | 'experience' | 'credentials' | 'preferences' | 'reviews';
+type ProfileTab = 'overview' | 'education' | 'experience' | 'credentials' | 'reviews' | 'contact';
 
 const expTypeStyles: Record<string, string> = {
   Work: 'bg-blue-50 text-blue-700 border-blue-100',
@@ -171,9 +171,10 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
     isOwner ? (
       <button
         onClick={() => openEdit(section)}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 text-gray-500 bg-white hover:border-brand-primary hover:text-brand-primary hover:bg-blue-50/50 transition-all"
+        className="p-1.5 rounded-lg text-gray-300 hover:text-brand-primary hover:bg-blue-50/50 transition-all"
+        title="Edit"
       >
-        <Pencil size={12} /> Edit
+        <Pencil size={14} />
       </button>
     ) : null;
 
@@ -184,14 +185,15 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
 
   const TABS: { id: ProfileTab; label: string; badge?: React.ReactNode }[] = [
     { id: 'overview', label: 'Overview' },
+    { id: 'education', label: 'Education & Training' },
     { id: 'experience', label: 'Experience' },
     { id: 'credentials', label: 'Credentials' },
-    { id: 'preferences', label: 'Preferences' },
     { id: 'reviews', label: 'Reviews', badge: profileReviews.length > 0 ? (
       <span className="inline-flex items-center gap-0.5 ml-1.5 text-amber-500" style={{ fontSize: 11, fontWeight: 700 }}>
         <Star size={10} fill="currentColor" /> {profileAvgRating.toFixed(1)} ({profileReviews.length})
       </span>
     ) : undefined },
+    { id: 'contact', label: 'Contact' },
   ];
 
   // ═══════════════════════════════════════════════════════════
@@ -218,35 +220,17 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
               )}
             </section>
 
-            {/* Education */}
-            <section className="pb-7 mb-7 border-b border-gray-100">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-[17px] font-bold text-gray-900">Education</h2>
-                <SectionEdit section="education" />
-              </div>
-              <div className="space-y-4">
-                {profile.education.map((edu) => (
-                  <div key={edu.id} className="flex items-start gap-3.5">
-                    <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <GraduationCap size={16} className="text-blue-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[14px] font-bold text-gray-900">{edu.degree}</p>
-                      <p className="text-[13px] text-gray-500 mt-0.5">{edu.institution}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-[12px] text-gray-400 font-medium">{edu.year}</span>
-                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide ${
-                          edu.status === 'Ongoing' ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'
-                        }`}>{edu.status}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {profile.education.length === 0 && (
-                  <p className="text-[13px] text-gray-400">No education entries yet.</p>
-                )}
-              </div>
-            </section>
+            {/* Memberships */}
+            {profile.memberships && profile.memberships.length > 0 && (
+              <section className="pb-7 mb-7 border-b border-gray-100">
+                <h2 className="text-[17px] font-bold text-gray-900 mb-4">Professional Memberships</h2>
+                <div className="flex flex-wrap gap-2">
+                  {profile.memberships.map(m => (
+                    <span key={m} className="inline-flex items-center px-3 py-1 rounded-full text-[12px] font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">{m}</span>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Specialization */}
             <section className="pb-7">
@@ -287,21 +271,53 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
       case 'experience':
         return (
           <>
-            {/* CV */}
-            {profile.cvUploaded && (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 mb-7">
-                <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                  <FileText size={16} className="text-blue-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-semibold text-gray-800 truncate">{profile.cvFileName}</p>
-                  <p className="text-[11px] text-gray-400">Resume / CV</p>
-                </div>
-                {isOwner && (
-                  <button className="text-[12px] font-bold text-brand-primary hover:underline">Replace</button>
-                )}
-              </div>
+            {/* Professional Summary */}
+            {profile.professionalSummary && (
+              <section className="pb-7 mb-7 border-b border-gray-100">
+                <h2 className="text-[17px] font-bold text-gray-900 mb-3">Professional Summary</h2>
+                <p className="text-[15px] text-gray-600 leading-[1.75]">{profile.professionalSummary}</p>
+              </section>
             )}
+
+            {/* Downloadables */}
+            <div className="flex flex-wrap gap-3 mb-7">
+              {profile.cvUploaded && (
+                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 flex-1 min-w-[200px]">
+                  <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                    <FileText size={16} className="text-blue-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold text-gray-800 truncate">{profile.cvFileName}</p>
+                    <p className="text-[11px] text-gray-400">Resume / CV</p>
+                  </div>
+                  {isOwner && (
+                    <button className="text-[12px] font-bold text-brand-primary hover:underline">Replace</button>
+                  )}
+                </div>
+              )}
+              {profile.downloadables?.coverLetterUrl && (
+                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 flex-1 min-w-[200px]">
+                  <div className="w-9 h-9 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0">
+                    <FileText size={16} className="text-teal-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold text-gray-800">Cover Letter</p>
+                    <p className="text-[11px] text-gray-400">Cover letter document</p>
+                  </div>
+                </div>
+              )}
+              {profile.downloadables?.portfolioUrl && (
+                <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 flex-1 min-w-[200px]">
+                  <div className="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                    <FileText size={16} className="text-purple-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold text-gray-800">Portfolio</p>
+                    <p className="text-[11px] text-gray-400">Portfolio document</p>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Experience Entries */}
             <section className={`pb-7 ${(isProfessional && ((profile.publications || []).length > 0 || (profile.talks || []).length > 0)) ? 'mb-7 border-b border-gray-100' : ''}`}>
@@ -401,7 +417,12 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                         <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${recTypeStyles[rec.type] || 'bg-gray-50 text-gray-600 border-gray-100'}`}>{rec.type}</span>
                       </div>
                       <p className="text-[13px] text-gray-500 mt-0.5">{rec.issuer}</p>
-                      <p className="text-[12px] text-gray-400 mt-0.5">{rec.year}</p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-[12px] text-gray-400">{rec.year}</span>
+                        {rec.expiryDate && (
+                          <span className="text-[10px] font-semibold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-100">Expires {rec.expiryDate}</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -418,7 +439,7 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                   <h2 className="text-[17px] font-bold text-gray-900">Supervision</h2>
                   <SectionEdit section="supervision" />
                 </div>
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                   <div>
                     <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-0.5">Hours Completed</span>
                     <span className="text-[13px] font-semibold text-gray-800">{profile.supervision.hoursCompleted}</span>
@@ -498,55 +519,97 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
           </>
         );
 
-      // ─── PREFERENCES ──────────────────────────────────
-      case 'preferences':
+      // ─── EDUCATION & TRAINING ──────────────────────────
+      case 'education':
         return (
           <>
-            {/* Open To */}
+            {/* Education Entries */}
             <section className="pb-7 mb-7 border-b border-gray-100">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-[17px] font-bold text-gray-900">Open To</h2>
-                <SectionEdit section="openTo" />
+                <h2 className="text-[17px] font-bold text-gray-900">Education</h2>
+                <SectionEdit section="education" />
               </div>
-              {profile.openTo.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {profile.openTo.map((item) => (
-                    <span key={item} className="inline-flex items-center px-3 py-1.5 rounded-full text-[12px] font-semibold bg-teal-50 text-teal-700 border border-teal-100">{item}</span>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-[13px] text-gray-400">Not specified</p>
-              )}
+              <div className="space-y-4">
+                {profile.education.map((edu) => (
+                  <div key={edu.id} className="flex items-start gap-3.5">
+                    <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <GraduationCap size={16} className="text-blue-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[14px] font-bold text-gray-900">{edu.degree}</p>
+                      <p className="text-[13px] text-gray-500 mt-0.5">{edu.institution}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[12px] text-gray-400 font-medium">{edu.year}</span>
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide ${
+                          edu.status === 'Ongoing' ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'
+                        }`}>{edu.status}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {profile.education.length === 0 && (
+                  <p className="text-[13px] text-gray-400">No education entries yet.</p>
+                )}
+              </div>
             </section>
 
-            {/* Availability */}
+            {/* Certifications with Validity */}
             <section className="pb-7">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-[17px] font-bold text-gray-900">Availability</h2>
-                <SectionEdit section="availability" />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                <div className="p-4 rounded-xl bg-gray-50 flex flex-col gap-1">
-                  <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Hours / Week</span>
-                  <span className="text-sm text-gray-900 font-semibold">{profile.availabilityHours}</span>
-                </div>
-                <div className="p-4 rounded-xl bg-gray-50 flex flex-col gap-1">
-                  <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Work Mode</span>
-                  <span className="text-sm text-gray-900 font-semibold">{profile.preferredWorkMode}</span>
-                </div>
-                <div className="p-4 rounded-xl bg-gray-50 flex flex-col gap-1">
-                  <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Open to Relocate</span>
-                  <span className="text-sm text-gray-900 font-semibold">
-                    {profile.relocationReady ? (
-                      <span className="inline-flex items-center gap-1 text-green-600"><CheckCircle2 size={14} /> Yes</span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-gray-500"><X size={14} /> No</span>
-                    )}
-                  </span>
-                </div>
+              <h2 className="text-[17px] font-bold text-gray-900 mb-4">Certifications & Training</h2>
+              <div className="space-y-3">
+                {profile.recognition.filter(r => r.type === 'Certification').map((cert) => (
+                  <div key={cert.id} className="flex items-start gap-3.5">
+                    <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Award size={16} className="text-amber-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[14px] font-bold text-gray-900">{cert.title}</p>
+                      <p className="text-[13px] text-gray-500 mt-0.5">{cert.issuer}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[12px] text-gray-400">{cert.year}</span>
+                        {cert.expiryDate && (
+                          <span className="text-[10px] font-semibold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-100">Valid until {cert.expiryDate}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {profile.recognition.filter(r => r.type === 'Certification').length === 0 && (
+                  <p className="text-[13px] text-gray-400">No certifications yet.</p>
+                )}
               </div>
             </section>
           </>
+        );
+
+      // ─── CONTACT FORM ────────────────────────────────
+      case 'contact':
+        return (
+          <section>
+            <h2 className="text-[17px] font-bold text-gray-900 mb-2">Get in Touch</h2>
+            <p className="text-[13px] text-gray-500 mb-6">Send a message to {profile.fullName}. They will receive it via their preferred contact method.</p>
+            <div className="flex flex-col gap-5 max-w-lg">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[12px] font-semibold text-gray-600">Your Name</label>
+                <input type="text" placeholder="Full name" className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[12px] font-semibold text-gray-600">Your Email</label>
+                <input type="email" placeholder="email@example.com" className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[12px] font-semibold text-gray-600">Subject</label>
+                <input type="text" placeholder="What is this about?" className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[12px] font-semibold text-gray-600">Message</label>
+                <textarea rows={5} placeholder="Write your message..." className="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all resize-none" />
+              </div>
+              <button className="self-start bg-brand-secondary text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:bg-brand-secondary-hover transition-all shadow-sm active:scale-[0.97] duration-200">
+                Send Message
+              </button>
+            </div>
+          </section>
         );
 
       // ─── REVIEWS ───────────────────────────────────────
@@ -586,15 +649,28 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
         </div>
       )}
 
+      {/* ═══ COVER IMAGE ═══ */}
+      <div className="w-full h-[160px] sm:h-[200px] relative overflow-hidden bg-gradient-to-br from-blue-800 via-indigo-700 to-blue-900">
+        {profile.coverImageUrl && (
+          <ImageWithFallback src={profile.coverImageUrl} alt="" className="w-full h-full object-cover absolute inset-0" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        {isOwner && (
+          <button className="absolute bottom-3 right-3 px-3 py-1.5 rounded-lg bg-white/80 backdrop-blur-sm text-xs font-semibold text-gray-700 hover:bg-white transition-all flex items-center gap-1.5 shadow-sm">
+            <Camera size={12} /> Edit Cover
+          </button>
+        )}
+      </div>
+
       {/* ═══ HEADER (white, clean) ═══ */}
       <div className="w-full border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-6 pt-10 pb-0">
+        <div className="max-w-5xl mx-auto px-6 pt-0 pb-0">
 
-          {/* Identity row */}
-          <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-6">
+          {/* Identity row — avatar overlaps cover image */}
+          <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-6 -mt-12">
             {/* Avatar */}
             <div className="relative group flex-shrink-0">
-              <div className="w-[88px] h-[88px] rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 shadow-sm">
+              <div className="w-[88px] h-[88px] rounded-2xl overflow-hidden border-4 border-white bg-gray-100 shadow-md">
                 <ImageWithFallback src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover" />
               </div>
               {isOwner && (
@@ -606,12 +682,18 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                   <Camera size={18} className="text-white" />
                 </button>
               )}
+              {/* Active status dot */}
+              {profile.activeStatus && (
+                <span className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-white ${
+                  profile.activeStatus === 'Active' ? 'bg-green-500' : profile.activeStatus === 'Away' ? 'bg-amber-400' : 'bg-gray-400'
+                }`} title={profile.activeStatus} />
+              )}
             </div>
 
             {/* Info + Actions */}
-            <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 pt-2">
               <div className="min-w-0">
-                {/* Name + badge */}
+                {/* Name + badges */}
                 <div className="flex items-center gap-2.5 flex-wrap">
                   <h1 className="text-[26px] font-extrabold text-gray-900 tracking-tight leading-tight">{profile.fullName}</h1>
                   <UserGroupBadge group={profile.userGroup} />
@@ -620,7 +702,17 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                       <ShieldCheck size={14} /> Verified
                     </span>
                   )}
+                  {profile.ethicsPledge && (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600">
+                      <ShieldCheck size={14} /> Ethics Pledge
+                    </span>
+                  )}
                 </div>
+
+                {/* Headline */}
+                {profile.headline && (
+                  <p className="text-[14px] text-gray-600 font-medium mt-1 max-w-2xl leading-snug">{profile.headline}</p>
+                )}
 
                 {/* Meta line */}
                 <div className="flex items-center gap-2 flex-wrap mt-1.5">
@@ -637,8 +729,27 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                   )}
                 </div>
 
-                {/* Bio */}
-                <p className="text-[14px] text-gray-500 leading-relaxed mt-3 max-w-2xl line-clamp-2">{profile.bio}</p>
+                {/* Specialization tags in header */}
+                {profile.specializations.length > 0 && (
+                  <div className="flex items-center gap-1.5 flex-wrap mt-3">
+                    {profile.specializations.map(s => (
+                      <span key={s} className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors">{s}</span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Open To chips */}
+                {profile.openTo.length > 0 && (
+                  <div className="flex items-center gap-1.5 flex-wrap mt-2">
+                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">Open to:</span>
+                    {profile.openTo.slice(0, 4).map(o => (
+                      <span key={o} className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-100">{o}</span>
+                    ))}
+                    {profile.openTo.length > 4 && (
+                      <span className="text-[10px] font-semibold text-gray-400">+{profile.openTo.length - 4} more</span>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Actions */}
@@ -668,11 +779,16 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                         <UserPlus size={13} /> Connect
                       </button>
                     )}
-                    <button 
+                    <button
                       onClick={() => onNavigate?.('Messages', { personId })}
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-[13px] border border-gray-200 text-gray-700 hover:bg-gray-50 transition-all"
                     >
                       <MessageSquare size={13} /> Message
+                    </button>
+                    <button
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-[13px] border border-gray-200 text-gray-700 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-200 transition-all"
+                    >
+                      <UserPlus size={13} /> Refer
                     </button>
                   </>
                 )}
@@ -729,7 +845,7 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
           <aside className="lg:border-l lg:border-gray-100 lg:pl-8">
             <div className="lg:sticky lg:top-6 flex flex-col gap-6">
 
-              {/* Quick info */}
+              {/* Basic Info */}
               <div className="flex flex-col gap-3.5">
                 {[
                   { l: 'Career Stage', v: profile.careerStage },
@@ -737,6 +853,11 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                   { l: 'Work Mode', v: profile.preferredWorkMode },
                   ...(profile.availabilityHours > 0 ? [{ l: 'Availability', v: `${profile.availabilityHours} hrs/week` }] : []),
                   ...(isProfessional && profile.yearsOfExperience ? [{ l: 'Experience', v: `${profile.yearsOfExperience} years` }] : []),
+                  ...(profile.email ? [{ l: 'Email', v: profile.email }] : []),
+                  ...(profile.phone ? [{ l: 'Phone', v: profile.phone }] : []),
+                  ...(profile.dateOfBirth ? [{ l: 'Date of Birth', v: profile.dateOfBirth }] : []),
+                  ...(profile.contactPreference ? [{ l: 'Preferred Contact', v: profile.contactPreference }] : []),
+                  ...(profile.profileVisibility ? [{ l: 'Visibility', v: profile.profileVisibility }] : []),
                 ].map(s => (
                   <div key={s.l}>
                     <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-0.5">{s.l}</span>
@@ -744,6 +865,38 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
                   </div>
                 ))}
               </div>
+
+              {/* Social Links */}
+              {profile.socialLinks && Object.values(profile.socialLinks).some(Boolean) && (
+                <>
+                  <div className="h-px bg-gray-100" />
+                  <div>
+                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider block mb-2.5">Social Links</span>
+                    <div className="flex items-center gap-2">
+                      {profile.socialLinks.linkedin && (
+                        <a href={profile.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-100 transition-colors" title="LinkedIn">
+                          <Globe size={15} />
+                        </a>
+                      )}
+                      {profile.socialLinks.twitter && (
+                        <a href={profile.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center hover:bg-sky-100 transition-colors" title="Twitter">
+                          <Globe size={15} />
+                        </a>
+                      )}
+                      {profile.socialLinks.website && (
+                        <a href={profile.socialLinks.website} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-gray-50 text-gray-600 flex items-center justify-center hover:bg-gray-100 transition-colors" title="Website">
+                          <Globe size={15} />
+                        </a>
+                      )}
+                      {profile.socialLinks.youtube && (
+                        <a href={profile.socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-100 transition-colors" title="YouTube">
+                          <Globe size={15} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
 
               {profile.specializations.length > 0 && (
                 <>
@@ -872,16 +1025,16 @@ function EditModals({
             <div className="flex flex-col gap-4">
               <FG label="Full Name"><Input value={draft.fullName || ''} onChange={(e) => updateDraft('fullName', e.target.value)} /></FG>
               <FG label="Location"><Input value={draft.location || ''} onChange={(e) => updateDraft('location', e.target.value)} /></FG>
-              <FG label="Bio"><Textarea value={draft.bio || ''} onChange={(e) => updateDraft('bio', e.target.value)} rows={3} /></FG>
+              <FG label="Professional Headline"><Textarea value={draft.bio || ''} onChange={(e) => updateDraft('bio', e.target.value)} rows={3} /></FG>
             </div>
           ),
         };
       case 'about':
         return {
-          title: 'Edit About', desc: 'Update your bio and career vision.',
+          title: 'Edit About', desc: 'Update your headline and career vision.',
           body: (
             <div className="flex flex-col gap-4">
-              <FG label="Bio"><Textarea value={draft.bio || ''} onChange={(e) => updateDraft('bio', e.target.value)} rows={3} /></FG>
+              <FG label="Professional Headline"><Textarea value={draft.bio || ''} onChange={(e) => updateDraft('bio', e.target.value)} rows={3} /></FG>
               <FG label="Career Vision"><Textarea value={draft.careerVision || ''} onChange={(e) => updateDraft('careerVision', e.target.value)} rows={3} /></FG>
             </div>
           ),

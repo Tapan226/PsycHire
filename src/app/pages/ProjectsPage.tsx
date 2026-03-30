@@ -19,6 +19,8 @@ import {
   GraduationCap,
   SlidersHorizontal,
   DollarSign,
+  FileCheck,
+  FolderKanban,
 } from 'lucide-react';
 import { ProjectCard } from '@/app/components/ProjectCard';
 import { EmptyStateNudge, LowResultsNudge } from '@/app/components/CrossLinkNudge';
@@ -56,8 +58,8 @@ interface ProjectsPageProps {
   onExternalSearchChange?: (query: string) => void;
   externalLocationQuery?: string;
   onExternalLocationChange?: (query: string) => void;
-  externalSubTab?: 'all' | 'saved';
-  onExternalSubTabChange?: (tab: 'all' | 'saved') => void;
+  externalSubTab?: 'all' | 'saved' | 'applied' | 'ongoing';
+  onExternalSubTabChange?: (tab: 'all' | 'saved' | 'applied' | 'ongoing') => void;
 }
 
 /* ══════════════════════════════════════════════
@@ -227,7 +229,7 @@ export function ProjectsPage({
   /* ── Search ── */
   const [internalSearchQuery, setInternalSearchQuery] = useState('');
   const [internalLocationQuery, setInternalLocationQuery] = useState('');
-  const [internalTab, setInternalTab] = useState<'all' | 'saved'>('all');
+  const [internalTab, setInternalTab] = useState<'all' | 'saved' | 'applied' | 'ongoing'>('all');
 
   const searchQuery = embedded && externalSearchQuery !== undefined ? externalSearchQuery : internalSearchQuery;
   const setSearchQuery = embedded && onExternalSearchChange ? onExternalSearchChange : setInternalSearchQuery;
@@ -328,6 +330,7 @@ export function ProjectsPage({
     return allProjects
       .filter((p) => {
         if (activeTab === 'saved' && !savedProjectIds.has(p.id)) return false;
+        if (activeTab === 'applied' || activeTab === 'ongoing') return true;
 
         const q = searchQuery.toLowerCase();
         if (q && !(p.title.toLowerCase().includes(q) || p.projectType.toLowerCase().includes(q) || p.segment.toLowerCase().includes(q) || p.offeredByName.toLowerCase().includes(q)))
@@ -383,7 +386,7 @@ export function ProjectsPage({
   filters.durations.forEach((d) => activeFilterTags.push({ label: `${d} (${DURATION_LABELS[d]})`, group: 'Duration', onRemove: () => toggleFilter('durations', d) }));
   filters.prices.forEach((p) => activeFilterTags.push({ label: p, group: 'Price', onRemove: () => toggleFilter('prices', p) }));
   filters.recognitions.forEach((r) => activeFilterTags.push({ label: r, group: 'Recognition', onRemove: () => toggleFilter('recognitions', r) }));
-  filters.segments.forEach((s) => activeFilterTags.push({ label: s, group: 'Segment', onRemove: () => toggleFilter('segments', s) }));
+  filters.segments.forEach((s) => activeFilterTags.push({ label: s, group: 'Industry', onRemove: () => toggleFilter('segments', s) }));
 
   /* ── Primary horizontal chip configs (4 most important) ── */
   const PRIMARY_CHIPS: {
@@ -396,7 +399,7 @@ export function ProjectsPage({
     { key: 'specializations', label: 'Specialization', icon: <GraduationCap size={14} />, options: PROJECT_TYPE_OPTIONS as string[], filterKey: 'specializations' },
     { key: 'formats', label: 'Format', icon: <Wifi size={14} />, options: PROJECT_FORMAT_OPTIONS as string[], filterKey: 'formats' },
     { key: 'levels', label: 'Level', icon: <TrendingUp size={14} />, options: PROJECT_LEVEL_OPTIONS as string[], filterKey: 'levels' },
-    { key: 'segments', label: 'Segment', icon: <Building2 size={14} />, options: PROJECT_SEGMENT_OPTIONS as string[], filterKey: 'segments' },
+    { key: 'segments', label: 'Industry', icon: <Building2 size={14} />, options: PROJECT_SEGMENT_OPTIONS as string[], filterKey: 'segments' },
   ];
 
   /* ══════════════════════════════════════════════
@@ -504,6 +507,24 @@ export function ProjectsPage({
             >
               <Bookmark size={16} />
               Saved
+            </button>
+            <button
+              onClick={() => setActiveTab('applied')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200 ${
+                activeTab === 'applied' ? 'bg-white text-teal-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <FileCheck size={16} />
+              Applied
+            </button>
+            <button
+              onClick={() => setActiveTab('ongoing')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200 ${
+                activeTab === 'ongoing' ? 'bg-white text-teal-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <FolderKanban size={16} />
+              Ongoing
             </button>
           </div>
         )}
@@ -787,6 +808,50 @@ export function ProjectsPage({
                 onAction={() => setActiveTab('all')}
               />
             )}
+          </div>
+        )}
+
+        {/* ═══ APPLIED TAB ═══ */}
+        {activeTab === 'applied' && (
+          <div className="flex-1">
+            <div className="mb-6">
+              <h2 className="text-lg font-bold text-gray-900">Applied Projects</h2>
+              <p className="text-sm text-gray-500 mt-1">Projects you've submitted applications to.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {allProjects.slice(0, 2).map((project) => (
+                <div key={`applied-${project.id}`} className="h-full relative">
+                  <ProjectCard {...project} isSaved={savedProjectIds.has(project.id)} onSave={() => toggleSaveProject(project.id)} onClick={() => onNavigate?.('ProjectDetails')} onShare={() => handleShareProject(project.title)} />
+                  <div className="absolute top-3 left-3 z-10">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">
+                      <FileCheck size={10} /> Under Review
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ═══ ONGOING TAB ═══ */}
+        {activeTab === 'ongoing' && (
+          <div className="flex-1">
+            <div className="mb-6">
+              <h2 className="text-lg font-bold text-gray-900">Ongoing Projects</h2>
+              <p className="text-sm text-gray-500 mt-1">Projects you're actively contributing to.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {allProjects.slice(2, 3).map((project) => (
+                <div key={`ongoing-${project.id}`} className="h-full relative">
+                  <ProjectCard {...project} isSaved={savedProjectIds.has(project.id)} onSave={() => toggleSaveProject(project.id)} onClick={() => onNavigate?.('ProjectDetails')} onShare={() => handleShareProject(project.title)} />
+                  <div className="absolute top-3 left-3 z-10">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-200">
+                      <FolderKanban size={10} /> Active
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

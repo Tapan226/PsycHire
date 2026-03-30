@@ -61,7 +61,7 @@ export function OpportunitiesPage({ onNavigate, userRole, initialTab = 'jobs' }:
 
   // Sub-tab state per module
   const [jobSubTab, setJobSubTab] = useState<'all' | 'saved' | 'applied'>('all');
-  const [projectSubTab, setProjectSubTab] = useState<'all' | 'saved'>('all');
+  const [projectSubTab, setProjectSubTab] = useState<'all' | 'saved' | 'applied' | 'ongoing'>('all');
   const [referralSubTab, setReferralSubTab] = useState<ReferralSubTab>('all');
 
   // Current search values
@@ -84,8 +84,10 @@ export function OpportunitiesPage({ onNavigate, userRole, initialTab = 'jobs' }:
       { key: 'applied', label: 'Applied', icon: <CheckCircle2 size={15} /> },
     ],
     projects: [
-      { key: 'all', label: 'All Projects', icon: <LayoutGrid size={15} /> },
+      { key: 'all', label: 'Explore', icon: <LayoutGrid size={15} /> },
       { key: 'saved', label: 'Saved', icon: <Bookmark size={15} /> },
+      { key: 'applied', label: 'Applied', icon: <CheckCircle2 size={15} /> },
+      { key: 'ongoing', label: 'Ongoing', icon: <Sparkles size={15} /> },
     ],
     referrals: isStudent ? [] : [
       { key: 'all', label: 'All Referrals', icon: <LayoutGrid size={15} /> },
@@ -99,7 +101,7 @@ export function OpportunitiesPage({ onNavigate, userRole, initialTab = 'jobs' }:
     : referralSubTab;
   const setCurrentSubTab = (tab: string) => {
     if (activeTab === 'jobs') setJobSubTab(tab as 'all' | 'saved' | 'applied');
-    if (activeTab === 'projects') setProjectSubTab(tab as 'all' | 'saved');
+    if (activeTab === 'projects') setProjectSubTab(tab as 'all' | 'saved' | 'applied' | 'ongoing');
     if (activeTab === 'referrals') setReferralSubTab(tab as ReferralSubTab);
   };
 

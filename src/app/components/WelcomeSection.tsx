@@ -41,7 +41,7 @@ export function WelcomeSection({ userName = "Jane", showCompletionWidget = false
                        cx="24" 
                        cy="24" 
                        r={radius} 
-                       stroke="#18cb96" 
+                       className="stroke-brand-secondary" 
                        strokeWidth="4" 
                        fill="none" 
                        strokeDasharray={circumference} 

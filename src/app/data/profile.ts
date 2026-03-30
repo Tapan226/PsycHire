@@ -38,6 +38,23 @@ export interface RecognitionEntry {
   issuer: string;
   year: string;
   type: 'Certification' | 'Achievement' | 'Award';
+  expiryDate?: string;
+}
+
+export type ActiveStatus = 'Active' | 'Dormant' | 'Away';
+export type ProfileVisibility = 'Public' | 'Connections Only' | 'Private';
+
+export interface SocialLinks {
+  linkedin?: string;
+  twitter?: string;
+  website?: string;
+  youtube?: string;
+}
+
+export interface Downloadables {
+  cvUrl?: string;
+  coverLetterUrl?: string;
+  portfolioUrl?: string;
 }
 
 export interface SupervisionInfo {
@@ -81,16 +98,31 @@ export interface MentoringInfo {
 
 export interface StudentProfile {
   // Header
+  salutation?: string;
   fullName: string;
+  headline?: string;
   avatarUrl: string;
+  coverImageUrl?: string;
   userGroup: UserGroup;
   careerStage: CareerStage;
   location: string;
   verificationStatus: VerificationStatus;
+  activeStatus?: ActiveStatus;
+  ethicsPledge?: boolean;
+
+  // Contact / Basic Info
+  dateOfBirth?: string;
+  phone?: string;
+  email?: string;
+  contactPreference?: string;
+  profileVisibility?: ProfileVisibility;
+  socialLinks?: SocialLinks;
 
   // About
   bio: string;
   careerVision: string;
+  professionalSummary?: string;
+  memberships?: string[];
 
   // Education
   education: EducationEntry[];
@@ -114,6 +146,7 @@ export interface StudentProfile {
   // Experience & Portfolio
   cvUploaded: boolean;
   cvFileName?: string;
+  downloadables?: Downloadables;
   experience: ExperienceEntry[];
 
   // Recognition
@@ -168,15 +201,28 @@ export function getOpenToOptions(userGroup: UserGroup): string[] {
 // ─── Student Mock ────────────────────────────────────────────
 
 export const mockProfile: StudentProfile = {
+  salutation: 'Ms.',
   fullName: 'Jane Doe',
+  headline: 'Psychology post-graduate passionate about child development and community mental health',
   avatarUrl: 'https://images.unsplash.com/photo-1663670761152-3b9f3edfdefc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB5b3VuZyUyMGZlbWFsZSUyMHN0dWRlbnQlMjBwb3J0cmFpdCUyMHBzeWNob2xvZ3l8ZW58MXx8fHwxNzcwMTA3MzE1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  coverImageUrl: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1200&h=300&fit=crop',
   userGroup: 'Student',
   careerStage: 'Post-grad',
   location: 'Mumbai, India',
   verificationStatus: 'Verified',
+  activeStatus: 'Active',
+  ethicsPledge: true,
 
-  bio: 'Psychology post-graduate passionate about child development and community mental health. Eager to contribute to evidence-based interventions.',
+  dateOfBirth: '15 Mar 2002',
+  phone: '+91 98765 43210',
+  email: 'jane.doe@university.edu',
+  contactPreference: 'Email',
+  profileVisibility: 'Public',
+  socialLinks: { linkedin: 'https://linkedin.com/in/janedoe', website: 'https://janedoe.com' },
+
+  bio: 'Eager to contribute to evidence-based interventions for children and adolescents.',
   careerVision: 'To become a licensed child psychologist working with underserved communities.',
+  memberships: ['Indian Association of Clinical Psychologists', 'APA Student Affiliate'],
 
   education: [
     {
@@ -218,6 +264,7 @@ export const mockProfile: StudentProfile = {
 
   cvUploaded: true,
   cvFileName: 'Jane_Doe_CV_2026.pdf',
+  downloadables: { cvUrl: '#', coverLetterUrl: '#' },
   experience: [
     {
       id: 'exp-1',
@@ -252,6 +299,7 @@ export const mockProfile: StudentProfile = {
       issuer: 'Mental Health Foundation of India',
       year: '2025',
       type: 'Certification',
+      expiryDate: 'Mar 2028',
     },
     {
       id: 'rec-2',
@@ -273,15 +321,29 @@ export const mockProfile: StudentProfile = {
 // ─── Professional Mock ───────────────────────────────────────
 
 export const mockProfessionalProfile: StudentProfile = {
+  salutation: 'Dr.',
   fullName: 'Dr. Arjun Mehta',
+  headline: 'Licensed Clinical Psychologist | CBT & Trauma Specialist | RCI-Approved Supervisor',
   avatarUrl: 'https://images.unsplash.com/photo-1649433658557-54cf58577c68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBtYW4lMjBkb2N0b3IlMjBibGF6ZXIlMjBjb25maWRlbnQlMjBwb3J0cmFpdCUyMHN0dWRpb3xlbnwxfHx8fDE3NzA3MTA3MDZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+  coverImageUrl: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&h=300&fit=crop',
   userGroup: 'Professional',
   careerStage: 'Supervisor',
   location: 'Bangalore, India',
   verificationStatus: 'Verified',
+  activeStatus: 'Active',
+  ethicsPledge: true,
 
-  bio: 'Licensed clinical psychologist with 12+ years of experience in cognitive-behavioral therapy and trauma-focused interventions. RCI-licensed supervisor passionate about training the next generation of clinicians.',
+  dateOfBirth: '22 Aug 1988',
+  phone: '+91 99887 76655',
+  email: 'arjun.mehta@serenityhealth.in',
+  contactPreference: 'Email',
+  profileVisibility: 'Public',
+  socialLinks: { linkedin: 'https://linkedin.com/in/drarjunmehta', twitter: 'https://twitter.com/drarjunmehta', website: 'https://serenityhealth.in', youtube: 'https://youtube.com/@drarjunmehta' },
+
+  bio: 'RCI-licensed supervisor passionate about training the next generation of clinicians.',
   careerVision: 'Building accessible, evidence-based mental health infrastructure across India through training, research, and community partnerships.',
+  professionalSummary: 'Licensed clinical psychologist with 12+ years of experience in cognitive-behavioral therapy, EMDR, and trauma-focused interventions. Lead a team of 6 psychologists at Serenity Health. RCI-licensed supervisor with 860+ hours of supervision delivered. Published 3 peer-reviewed papers and presented at national and international conferences.',
+  memberships: ['Rehabilitation Council of India', 'Indian Association of Clinical Psychologists', 'EMDR India', 'APA International Affiliate'],
 
   education: [
     {
@@ -331,6 +393,7 @@ export const mockProfessionalProfile: StudentProfile = {
 
   cvUploaded: true,
   cvFileName: 'Dr_Arjun_Mehta_CV_2026.pdf',
+  downloadables: { cvUrl: '#', coverLetterUrl: '#', portfolioUrl: '#' },
   experience: [
     {
       id: 'exp-1',
@@ -379,6 +442,7 @@ export const mockProfessionalProfile: StudentProfile = {
       issuer: 'EMDR India',
       year: '2021',
       type: 'Certification',
+      expiryDate: 'Dec 2026',
     },
     {
       id: 'rec-4',

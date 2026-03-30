@@ -68,6 +68,7 @@ const MODULE_META: Record<Tab, {
 };
 
 const MODULE_KEYS: Tab[] = ['people', 'companies', 'events'];
+const NETWORK_ONLY_KEYS: Tab[] = ['people', 'companies'];
 
 /* ── Event sub-tab types ── */
 type EventSubTab = 'explore' | 'saved' | 'my-events';
@@ -462,8 +463,8 @@ export function MyNetworkPage({ onNavigate, userRole, initialTab = 'companies' }
 
       {/* MODULE SELECTOR */}
       <div className="w-full bg-cyan-900 pt-4 px-6 lg:px-10">
-        <div className="max-w-[1440px] mx-auto grid grid-cols-3 gap-2">
-          {MODULE_KEYS.map((key) => {
+        <div className={`max-w-[1440px] mx-auto grid gap-2 ${initialTab === 'events' ? 'grid-cols-1' : 'grid-cols-2'}`}>
+          {(initialTab === 'events' ? ['events' as Tab] : NETWORK_ONLY_KEYS).map((key) => {
             const mod = MODULE_META[key];
             const isActive = activeTab === key;
             return (
