@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
-import { ArrowRight, User, Mail, Lock, Phone, CheckCircle2, ShieldCheck, Eye, EyeOff, ChevronDown, Briefcase, Users, BookOpen, GraduationCap } from 'lucide-react';
+import { ArrowRight, ArrowLeft, User, Mail, Lock, Phone, CheckCircle2, ShieldCheck, Eye, EyeOff, ChevronDown, Briefcase, Users, BookOpen, GraduationCap, Building2, Stethoscope } from 'lucide-react';
+
+type SignupRole = 'Student' | 'Professional' | 'Company';
 
 interface SignupPageProps {
-  onSignupComplete: (userData: { name: string; email: string }) => void;
+  onSignupComplete: (userData: { name: string; email: string; role: SignupRole }) => void;
   onLogin: () => void;
 }
+
+const ROLE_OPTIONS: { id: SignupRole; icon: React.ElementType; title: string; desc: string }[] = [
+  { id: 'Student', icon: GraduationCap, title: 'Student', desc: 'Undergrad, postgrad, or early-career psychology student' },
+  { id: 'Professional', icon: Stethoscope, title: 'Professional', desc: 'Licensed psychologist, therapist, or supervisor' },
+  { id: 'Company', icon: Building2, title: 'Company / Organisation', desc: 'Clinic, hospital, training center, or hiring organisation' },
+];
 
 const COUNTRY_CODES = [
   { code: '+91', label: 'IN', flag: '🇮🇳' },
@@ -41,7 +49,8 @@ const PLATFORM_BENEFITS = [
 ];
 
 export function SignupPage({ onSignupComplete, onLogin }: SignupPageProps) {
-  const [step, setStep] = useState<'details' | 'otp'>('details');
+  const [step, setStep] = useState<'role' | 'details' | 'otp'>('role');
+  const [selectedRole, setSelectedRole] = useState<SignupRole>('Student');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -63,13 +72,17 @@ export function SignupPage({ onSignupComplete, onLogin }: SignupPageProps) {
 
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
+    if (step === 'role') {
+      setStep('details');
+      return;
+    }
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
       if (step === 'details') {
         setStep('otp');
       } else {
-        onSignupComplete({ name: formData.name, email: formData.email });
+        onSignupComplete({ name: formData.name, email: formData.email, role: selectedRole });
       }
     }, 800);
   };
@@ -129,27 +142,71 @@ export function SignupPage({ onSignupComplete, onLogin }: SignupPageProps) {
 
             {/* Progress */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gray-100">
-              <div className="h-full bg-brand-primary transition-all duration-500" style={{ width: step === 'details' ? '50%' : '100%' }} />
+              <div className="h-full bg-brand-primary transition-all duration-500" style={{ width: step === 'role' ? '33%' : step === 'details' ? '66%' : '100%' }} />
             </div>
 
             <div className="flex flex-col mb-7 mt-2">
+              {step !== 'role' && (
+                <button type="button" onClick={() => setStep(step === 'otp' ? 'details' : 'role')} className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 transition-colors mb-3 -ml-0.5">
+                  <ArrowLeft size={14} /> Back
+                </button>
+              )}
               <h1 className="text-2xl font-bold text-gray-900">
-                {step === 'details' ? 'Create Account' : 'Verify Identity'}
+                {step === 'role' ? 'I am joining as...' : step === 'details' ? 'Create Account' : 'Verify Identity'}
               </h1>
               <p className="text-gray-500 text-sm mt-1.5">
-                {step === 'details' ? 'Join the community of psychology professionals' : `We sent a code to ${countryCode} ${formData.phone.slice(0, 3)}** **${formData.phone.slice(-3)}`}
+                {step === 'role' ? 'Choose how you\'ll use PsycHIRE' : step === 'details' ? `Sign up as ${selectedRole}` : `We sent a code to ${countryCode} ${formData.phone.slice(0, 3)}** **${formData.phone.slice(-3)}`}
               </p>
             </div>
 
             <form onSubmit={handleContinue} className="flex flex-col gap-5">
 
+              {/* Role Selection */}
+              {step === 'role' && (
+                <div className="flex flex-col gap-3 animate-fade-in">
+                  {ROLE_OPTIONS.map(opt => {
+                    const isActive = selectedRole === opt.id;
+                    const Icon = opt.icon;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setSelectedRole(opt.id)}
+                        className={`relative w-full text-left p-5 rounded-xl border-2 transition-all duration-200 ${
+                          isActive
+                            ? 'border-brand-primary bg-brand-primary/[0.03] shadow-sm'
+                            : 'border-gray-200 hover:border-gray-300 bg-white'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                            isActive ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-500'
+                          }`}>
+                            <Icon size={20} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-bold text-gray-900">{opt.title}</p>
+                            <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{opt.desc}</p>
+                          </div>
+                        </div>
+                        <div className={`absolute top-5 right-5 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                          isActive ? 'border-brand-primary bg-brand-primary' : 'border-gray-300'
+                        }`}>
+                          {isActive && <div className="w-2 h-2 rounded-full bg-white" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
               {step === 'details' && (
                 <div className="flex flex-col gap-4 animate-fade-in">
                   {/* Name */}
                   <div>
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5 block">Full Name</label>
+                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5 block">{selectedRole === 'Company' ? 'Company Name' : 'Full Name'}</label>
                     <div className="relative">
-                      <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      {selectedRole === 'Company' ? <Building2 size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" /> : <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />}
                       <input
                         type="text"
                         value={formData.name}
@@ -328,7 +385,7 @@ export function SignupPage({ onSignupComplete, onLogin }: SignupPageProps) {
                   <span>Processing...</span>
                 ) : (
                   <>
-                    <span>{step === 'details' ? 'Verify & Continue' : 'Complete Sign Up'}</span>
+                    <span>{step === 'role' ? 'Continue' : step === 'details' ? 'Verify & Continue' : 'Complete Sign Up'}</span>
                     <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </>
                 )}

@@ -98,7 +98,7 @@ export default function App() {
   };
 
   const [user, setUser] = useState<User>(defaultUser);
-  const [tempSignupData, setTempSignupData] = useState<{name: string, email: string} | null>(null);
+  const [tempSignupData, setTempSignupData] = useState<{name: string, email: string, role: string} | null>(null);
 
   // App State
   const [currentPage, setCurrentPage] = useState('Dashboard');
@@ -477,7 +477,7 @@ export default function App() {
     setAuthStep('Signup');
   };
 
-  const handleSignupComplete = (data: {name: string, email: string}) => {
+  const handleSignupComplete = (data: {name: string, email: string, role: string}) => {
     setTempSignupData(data);
     setAuthStep('Onboarding');
   };
@@ -485,18 +485,23 @@ export default function App() {
   const handleOnboardingComplete = () => {
     setIsLoggedIn(true);
     setIsNewUser(true);
-    
+
     if (tempSignupData) {
+      const avatarMap: Record<string, string> = {
+        Student: defaultUser.avatar,
+        Professional: professionalUser.avatar,
+        Company: companyUser.avatar,
+      };
       setUser({
         name: tempSignupData.name,
         email: tempSignupData.email,
-        avatar: 'https://images.unsplash.com/photo-1707876447570-d2225b758f5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBpbmRpYW4lMjBmZW1hbGUlMjBzdHVkZW50JTIwcG9ydHJhaXQlMjBwc3ljaG9sb2d5fGVufDF8fHx8MTc3MDEwNjQ0MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        role: 'Student',
+        avatar: avatarMap[tempSignupData.role] || defaultUser.avatar,
+        role: (tempSignupData.role as UserGroup) || 'Student',
       });
     } else {
       setUser(defaultUser);
     }
-    
+
     setCurrentPage('Dashboard');
   };
 
@@ -514,7 +519,7 @@ export default function App() {
       );
     }
     if (authStep === 'Onboarding') {
-      return <OnboardingPage onComplete={handleOnboardingComplete} />;
+      return <OnboardingPage onComplete={handleOnboardingComplete} role={(tempSignupData?.role as 'Student' | 'Professional' | 'Company') || 'Student'} />;
     }
   }
 
