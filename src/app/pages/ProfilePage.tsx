@@ -634,156 +634,149 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
   return (
     <div className="flex flex-col w-full bg-white min-h-screen font-sans animate-fade-in">
 
-      {/* ═══ BACK BUTTON (visitor mode) ═══ */}
-      {onBack && (
-        <div className="w-full bg-[#f0f4f8] border-b border-gray-200">
-          <div className="max-w-5xl mx-auto px-6 py-3">
-            <button
-              onClick={onBack}
-              className="inline-flex items-center gap-2 text-[13px] font-bold text-cyan-700 hover:text-cyan-800 transition-colors"
-            >
-              <ArrowLeft size={16} />
-              Back to People
-            </button>
+      {/* ═══ PROFILE HEADER ═══ */}
+      <div className="w-full bg-gradient-to-br from-slate-800 via-blue-900 to-indigo-900 relative overflow-hidden">
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '28px 28px' }} />
+
+        <div className="max-w-5xl mx-auto px-6 lg:px-10 relative z-10">
+          {/* Top bar: back + edit cover */}
+          <div className="flex items-center justify-between pt-6 pb-8">
+            {onBack ? (
+              <button onClick={onBack} className="flex items-center gap-1.5 text-blue-200/70 hover:text-white transition-colors text-sm group">
+                <ArrowLeft size={15} className="group-hover:-translate-x-0.5 transition-transform" /> Back
+              </button>
+            ) : <div />}
+            {isOwner && (
+              <button className="px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm text-xs font-semibold text-white/70 hover:text-white hover:bg-white/20 transition-all flex items-center gap-1.5 border border-white/10">
+                <Camera size={12} /> Edit Cover
+              </button>
+            )}
           </div>
-        </div>
-      )}
 
-      {/* ═══ COVER IMAGE ═══ */}
-      <div className="w-full h-[160px] sm:h-[200px] relative overflow-hidden bg-gradient-to-br from-blue-800 via-indigo-700 to-blue-900">
-        {profile.coverImageUrl && (
-          <ImageWithFallback src={profile.coverImageUrl} alt="" className="w-full h-full object-cover absolute inset-0" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        {isOwner && (
-          <button className="absolute bottom-3 right-3 px-3 py-1.5 rounded-lg bg-white/80 backdrop-blur-sm text-xs font-semibold text-gray-700 hover:bg-white transition-all flex items-center gap-1.5 shadow-sm">
-            <Camera size={12} /> Edit Cover
-          </button>
-        )}
-      </div>
-
-      {/* ═══ HEADER (white, clean) ═══ */}
-      <div className="w-full border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-6 pt-0 pb-0">
-
-          {/* Identity row — avatar overlaps cover image */}
-          <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-6 -mt-12">
+          {/* Identity section */}
+          <div className="flex flex-col sm:flex-row sm:items-end gap-5 sm:gap-6 pb-8">
             {/* Avatar */}
             <div className="relative group flex-shrink-0">
-              <div className="w-[88px] h-[88px] rounded-2xl overflow-hidden border-4 border-white bg-gray-100 shadow-md">
+              <div className="w-24 h-24 rounded-2xl overflow-hidden border-4 border-white/20 bg-white/10 shadow-lg backdrop-blur-sm">
                 <ImageWithFallback src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover" />
               </div>
               {isOwner && (
                 <button
                   className="absolute inset-0 rounded-2xl bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer"
-                  onClick={() => {/* trigger file upload */}}
-                  title="Change profile photo"
+                  onClick={() => {}}
+                  title="Change photo"
                 >
                   <Camera size={18} className="text-white" />
                 </button>
               )}
-              {/* Active status dot */}
               {profile.activeStatus && (
-                <span className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full border-2 border-white ${
-                  profile.activeStatus === 'Active' ? 'bg-green-500' : profile.activeStatus === 'Away' ? 'bg-amber-400' : 'bg-gray-400'
+                <span className={`absolute -bottom-1 -right-1 w-4.5 h-4.5 rounded-full border-[3px] border-slate-800 ${
+                  profile.activeStatus === 'Active' ? 'bg-green-400' : profile.activeStatus === 'Away' ? 'bg-amber-400' : 'bg-gray-400'
                 }`} title={profile.activeStatus} />
               )}
             </div>
 
-            {/* Info + Actions */}
-            <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 pt-2">
-              <div className="min-w-0">
-                {/* Name + badges */}
-                <div className="flex items-center gap-2.5 flex-wrap">
-                  <h1 className="text-[26px] font-extrabold text-gray-900 tracking-tight leading-tight">{profile.fullName}</h1>
-                  <UserGroupBadge group={profile.userGroup} />
-                  {profile.verificationStatus === 'Verified' && (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-green-600">
-                      <ShieldCheck size={14} /> Verified
-                    </span>
+            {/* Name + meta */}
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="min-w-0">
+                  {/* Name row */}
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <h1 className="text-2xl font-extrabold text-white tracking-tight">{profile.fullName}</h1>
+                    <UserGroupBadge group={profile.userGroup} />
+                    {profile.verificationStatus === 'Verified' && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-green-300 bg-green-400/10 px-2 py-0.5 rounded-full border border-green-400/20">
+                        <ShieldCheck size={12} /> Verified
+                      </span>
+                    )}
+                    {profile.ethicsPledge && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-200 bg-blue-400/10 px-2 py-0.5 rounded-full border border-blue-300/20">
+                        <ShieldCheck size={12} /> Ethics
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Headline */}
+                  {profile.headline && (
+                    <p className="text-sm text-blue-100/70 font-medium mt-1.5 max-w-xl leading-relaxed">{profile.headline}</p>
                   )}
-                  {profile.ethicsPledge && (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600">
-                      <ShieldCheck size={14} /> Ethics Pledge
+
+                  {/* Meta line */}
+                  <div className="flex items-center gap-3 flex-wrap mt-2">
+                    <span className="inline-flex items-center gap-1 text-sm text-blue-200/60">
+                      <MapPin size={13} />{profile.location}
                     </span>
-                  )}
+                    <span className="text-blue-300/20">·</span>
+                    <span className="text-sm text-blue-200/60">{profile.careerStage}</span>
+                    {isProfessional && profile.yearsOfExperience && (
+                      <>
+                        <span className="text-blue-300/20">·</span>
+                        <span className="text-sm text-blue-200/60">{profile.yearsOfExperience} yrs experience</span>
+                      </>
+                    )}
+                  </div>
                 </div>
 
-                {/* Headline */}
-                {profile.headline && (
-                  <p className="text-[14px] text-gray-600 font-medium mt-1 max-w-2xl leading-snug">{profile.headline}</p>
-                )}
-
-                {/* Meta line */}
-                <div className="flex items-center gap-2 flex-wrap mt-1.5">
-                  <span className="inline-flex items-center gap-1 text-sm text-gray-500">
-                    <MapPin size={13} className="text-gray-400" />{profile.location}
-                  </span>
-                  <span className="text-gray-200">·</span>
-                  <span className="text-sm text-gray-500">{profile.careerStage}</span>
-                  {isProfessional && profile.yearsOfExperience && (
+                {/* Actions */}
+                <div className="flex items-center gap-2 shrink-0">
+                  {isOwner ? (
+                    <button
+                      onClick={() => openEdit('header')}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm bg-white text-gray-900 hover:bg-gray-50 transition-all shadow-sm"
+                    >
+                      <Pencil size={13} /> Edit Profile
+                    </button>
+                  ) : (
                     <>
-                      <span className="text-gray-200">·</span>
-                      <span className="text-sm text-gray-500">{profile.yearsOfExperience} yrs experience</span>
+                      {connectionStatus === 'connected' ? (
+                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm bg-green-500/20 text-green-200 border border-green-400/20">
+                          <Check size={13} /> Connected
+                        </span>
+                      ) : connectionStatus === 'pending' ? (
+                        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm bg-amber-500/20 text-amber-200 border border-amber-400/20">
+                          <Clock size={13} /> Pending
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => setShowConnectDialog(true)}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm bg-white text-gray-900 hover:bg-gray-50 transition-all shadow-sm"
+                        >
+                          <UserPlus size={13} /> Connect
+                        </button>
+                      )}
+                      <button
+                        onClick={() => onNavigate?.('Messages', { personId })}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm border border-white/15 text-white/80 hover:text-white hover:bg-white/10 transition-all"
+                      >
+                        <MessageSquare size={13} /> Message
+                      </button>
+                      <button
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm border border-white/15 text-white/80 hover:text-white hover:bg-white/10 transition-all"
+                      >
+                        <UserPlus size={13} /> Refer
+                      </button>
                     </>
                   )}
+                  <Tooltip content="Share Profile">
+                    <button className="p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-lg transition-all"><Share2 size={16} /></button>
+                  </Tooltip>
                 </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center gap-2 shrink-0 sm:mt-1">
-                {isOwner ? (
-                  <button
-                    onClick={() => openEdit('header')}
-                    className="inline-flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-[13px] border border-gray-200 text-gray-700 bg-white hover:border-brand-primary hover:text-brand-primary hover:bg-blue-50/50 transition-all shadow-sm"
-                  >
-                    <Pencil size={13} /> Edit Profile
-                  </button>
-                ) : (
-                  <>
-                    {connectionStatus === 'connected' ? (
-                      <span className="inline-flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-[13px] bg-green-50 text-green-600 border border-green-100">
-                        <Check size={13} /> Connected
-                      </span>
-                    ) : connectionStatus === 'pending' ? (
-                      <span className="inline-flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-[13px] bg-amber-50 text-amber-600 border border-amber-100">
-                        <Clock size={13} /> Pending
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() => setShowConnectDialog(true)}
-                        className="inline-flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-[13px] bg-brand-primary text-white hover:bg-brand-primary/90 transition-all shadow-sm"
-                      >
-                        <UserPlus size={13} /> Connect
-                      </button>
-                    )}
-                    <button
-                      onClick={() => onNavigate?.('Messages', { personId })}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-[13px] border border-gray-200 text-gray-700 hover:bg-gray-50 transition-all"
-                    >
-                      <MessageSquare size={13} /> Message
-                    </button>
-                    <button
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-[13px] border border-gray-200 text-gray-700 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-200 transition-all"
-                    >
-                      <UserPlus size={13} /> Refer
-                    </button>
-                  </>
-                )}
-                <Tooltip content="Share Profile">
-                  <button className="p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-all"><Share2 size={16} /></button>
-                </Tooltip>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Tab bar */}
-          <div className="flex items-center gap-0 mt-7 -mb-px overflow-x-auto scrollbar-hide">
+      {/* ═══ TAB BAR ═══ */}
+      <div className="w-full bg-white border-b border-gray-200 sticky top-[72px] z-30">
+        <div className="max-w-5xl mx-auto px-6 lg:px-10">
+          <div className="flex items-center gap-0 -mb-px overflow-x-auto scrollbar-hide">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-5 py-3 text-[13px] font-semibold border-b-2 transition-colors whitespace-nowrap flex items-center ${
+                className={`px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap flex items-center ${
                   activeTab === tab.id
                     ? 'text-brand-primary border-brand-primary'
                     : 'text-gray-400 border-transparent hover:text-gray-700 hover:border-gray-200'
@@ -798,7 +791,7 @@ export function ProfilePage({ onNavigate, user, personId, onBack }: ProfilePageP
       </div>
 
       {/* ═══ BODY ═══ */}
-      <div className="max-w-5xl mx-auto w-full px-6 pt-8 pb-20">
+      <div className="max-w-5xl mx-auto w-full px-6 lg:px-10 pt-8 pb-20">
 
         {/* Profile completion banner (owner only) */}
         {isOwner && completion.percentage < 100 && (
